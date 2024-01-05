@@ -6,7 +6,7 @@ r_arica_y_parinacota <- c("c_arica", "c_camarones", "c_putre", "c_general_lagos"
 
 
 r_tarapaca <- c("c_iquique", "c_alto_hospicio","c_pozo_almonte", "c_camina",
-                "c_colchane", "c_huara", "c_pica")
+                "c_colchane", "c_huara", "c_pica", "c_iquique/alto_hospicio")
 
 r_antofagasta <- c("c_antofagasta", "c_mejillones", "c_taltal" ,"c_sierra_gorda", "c_calama",  
                    "c_ollague","c_san_pedro_de_atacama", "c_maria_elena", "c_tocopilla")
@@ -100,7 +100,7 @@ p_arica <- c("c_arica", "c_camarones")
 p_parinacota <- c("c_putre", "c_general_lagos")
 
 ## Región de tarapacá
-p_iquique <- c("c_iquique", "c_alto_hospicio")
+p_iquique <- c("c_iquique", "c_alto_hospicio", "c_iquique/alto_hospicio")
 
 p_el_tamarugal <- c("c_pozo_almonte", "c_camina","c_colchane", "c_huara", "c_pica")
 
@@ -135,12 +135,13 @@ p_petorca <- c("c_cabildo", "c_la_ligua", "c_papudo", "c_petorca", "c_zapallar")
 
 p_quillota <- c("c_hijuelas","c_calera", "c_la_cruz", "c_nogales", "c_quillota")
 
-p_san_antonio <- c("c_algarrobo", "c_cartagena","c_el_quisco", "c_el_tabo", "c_san_antonio", "c_santo_domingo")
+p_san_antonio <- c("c_algarrobo", "c_cartagena","c_el_quisco", "c_el_tabo", "c_san_antonio",
+                   "c_santo_domingo", "c_el_quisco/el_tabo")
 
 p_san_felipe <- c("c_catemu","c_llaillay", "c_panquehue", "c_putaendo", "c_san_felipe", "c_santa_maria")
 
 p_valparaiso <- c("c_casablanca", "c_concon", "c_juan_fernandez", "c_puchuncavi", "c_quintero",
-                  "c_valparaiso", "c_vina_del_mar")
+                  "c_valparaiso", "c_vina_del_mar", "c_valparaiso/vina_del_mar/_concon")
 
 p_marga_marga <- c("c_limache", "c_olmue", "c_quilpue", "c_villa_alemana")
 
@@ -158,7 +159,8 @@ p_santiago <- c("c_cerrillos", "c_cerro_navia", "c_conchali","c_el_bosque", "c_e
                 "c_la_pintana", "c_la_reina", "c_las_condes", "c_lo_barnechea","c_lo_espejo", 
                 "c_lo_prado", "c_macul", "c_maipu", "c_nunoa", "c_pedro_aguirre_cerda", "c_penalolen",
                 "c_providencia", "c_pudahuel", "c_quilicura", "c_quinta_normal", "c_recoleta",
-                "c_renca", "c_san_joaquin","c_san_miguel", "c_san_ramon", "c_santiago", "c_vitacura")
+                "c_renca", "c_san_joaquin","c_san_miguel", "c_san_ramon", "c_santiago", "c_vitacura",
+                "c_santiago_sur", "c_santiago_oeste")
 
 p_talagante <- c( "c_el_monte", "c_isla_de_maipo","c_padre_hurtado", "c_penaflor", "c_talagante")
 
@@ -190,11 +192,13 @@ p_talca <- c("c_constitucion","c_curepto", "c_empedrado", "c_maule", "c_pelarco"
 p_arauco <- c("c_arauco", "c_canete", "c_contulmo", "c_curanilahue", "c_lebu", "c_los_alamos","c_tirua")
 
 p_biobio <- c("c_alto_biobio",
-              "c_antuco", "c_cabrero", "c_laja", "c_los_angeles", "c_mulchen", "c_nacimiento", "c_negrete", "c_quilaco",
-              "c_quilleco", "c_san_rosendo", "c_santa_barbara", "c_tucapel", "c_yumbel")
+              "c_antuco", "c_cabrero", "c_laja", "c_los_angeles", "c_mulchen", "c_nacimiento",
+              "c_negrete", "c_quilaco","c_quilleco", "c_san_rosendo", "c_santa_barbara", "c_tucapel",
+              "c_yumbel")
 
 p_concepcion <- c("c_chiguayante", "c_concepcion","c_coronel", "c_florida", "c_hualpen", "c_hualqui", 
-                  "c_lota", "c_penco", "c_san_pedro_de_la_paz", "c_santa_juana","c_talcahuano", "c_tome")
+                  "c_lota", "c_penco", "c_san_pedro_de_la_paz", "c_santa_juana","c_talcahuano",
+                  "c_tome", "c_chiguayante/hualqui", "c_coronel/lota", "c_talcahuano/hualpen")
 
 
 #####--- Antes de 2017 Provincia del Ñuble parte de región del Bio Bio
@@ -255,10 +259,18 @@ p_coyhaique <- c("c_coyhaique", "c_lago_verde")
 
 p_aysen <- c("c_aysen", "c_cisnes", "c_guaitecas", "c_cisnes/guaitecas")
 
-p_capitan_prat <- c("c_cochrane", "c_ohiggins", "c_tortel", "c_tortel/ohiggins")
+p_capitan_prat <- c("c_cochrane", "c_ohiggins", "c_tortel", "c_tortel/o'higgins")
 
 p_general_carrera <- c("c_chile_chico", "c_rio_ibanez")
 
+### Region de Magallanes
+p_magallanes <- c("c_punta_arenas", "c_laguna_blanca", "c_rio_verde", "c_san_gregorio")
+
+p_antartica_chilena <- c("c_cabo_de_hornos", "c_antartica")
+
+p_tierra_del_fuego <- c("c_porvenir", "c_primavera", "c_timaukel")
+
+p_ultima_esperanza <- c("c_natales", "c_torres_del_paine")
 
 # Crear un data frame a partir de tus vectores de provincias
 provincias_df <- tibble(
@@ -267,7 +279,8 @@ provincias_df <- tibble(
              p_cordillera, p_maipo, p_melipilla, p_santiago, p_talagante, p_cachapoal, p_cardenal_caro,
              p_colchagua, p_cauquenes, p_curico, p_linares, p_talca, p_arauco, p_biobio, p_concepcion,
              p_diguillin, p_punilla, p_itata, p_malleco, p_cautin, p_valdivia, p_ranco, p_chiloe,
-             p_osorno, p_llanquihue, p_palena, p_coyhaique, p_aysen, p_capitan_prat),
+             p_osorno, p_llanquihue, p_palena, p_coyhaique, p_aysen, p_capitan_prat, p_general_carrera,
+             p_magallanes, p_antartica_chilena, p_tierra_del_fuego, p_ultima_esperanza ),
   provincia = rep(c("p_arica", "p_parinacota", "p_iquique", "p_el_tamarugal", "p_antofagasta",
                     "p_el_loa", "p_tocopilla", "p_chanaral", "p_copiapo", 
                     "p_huasco", "p_choapa", "p_elqui", "p_limari", "p_isla_de_pascua", "p_los_andes",
@@ -277,7 +290,8 @@ provincias_df <- tibble(
                     "p_cauquenes", "p_curico", "p_linares", "p_talca", "p_arauco", "p_biobio",
                     "p_concepcion", "p_diguillin", "p_punilla", "p_itata", "p_malleco", 
                     "p_cautin", "p_valdivia", "p_ranco", "p_chiloe", "p_osorno", "p_llanquihue",
-                    "p_palena", "p_coyhaique", "p_aysen", "p_capitan_prat"),
+                    "p_palena", "p_coyhaique", "p_aysen", "p_capitan_prat", "p_general_carrera",
+                    "p_magallanes", "p_antartica_chilena", "p_tierra_del_fuego", "p_ultima_esperanza"),
                   times = c(length(p_arica), length(p_parinacota), length(p_iquique), 
                             length(p_el_tamarugal), length(p_antofagasta), length(p_el_loa),
                             length(p_tocopilla),length(p_chanaral), length(p_copiapo),
@@ -293,6 +307,8 @@ provincias_df <- tibble(
                             length(p_punilla), length(p_itata), length(p_malleco), length(p_cautin),
                             length(p_valdivia), length(p_ranco), length(p_chiloe), length(p_osorno),
                             length(p_llanquihue),length(p_palena),length(p_coyhaique),length(p_aysen),
-                            length(p_capitan_prat)))
+                            length(p_capitan_prat), length(p_general_carrera), length(p_magallanes),
+                            length(p_antartica_chilena),length(p_tierra_del_fuego),
+                            length(p_ultima_esperanza) ))
 )
 

@@ -53,14 +53,21 @@ data_raw_01 <- data_raw |>
                                 TRUE ~ "0"
                                 )) |> 
   relocate(cut_region, .before = region) |> 
+  mutate(comuna = case_when(cut_comuna == 13134 ~ "c_santiago_oeste",
+                            cut_comuna == 13135 ~ "c_santiago_sur",
+                            TRUE ~ comuna)) |> 
   ### mapping provincias - comunas. Nota: provincias_df from 00_mapping_regiones_provincias_comunas
   left_join(provincias_df, by = "comuna") |> 
   relocate(provincia, .before = cut_comuna) |> 
   ### variables categoricas como factor
-  mutate_if(is.character,as.factor) 
+  mutate_if(is.character,as.factor) |> 
+  filter(comuna != "c_g1_santiago")
+  
 
 data_raw_01 |> 
-  filter(is.na(provincia)) 
+  mutate(cut_provincia = )
+  select(cut_comuna, provincia)
+
 
 
 
