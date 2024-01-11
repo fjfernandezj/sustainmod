@@ -61,14 +61,44 @@ data_raw_01 <- data_raw |>
   relocate(provincia, .before = cut_comuna) |> 
   ### variables categoricas como factor
   mutate_if(is.character,as.factor) |> 
-  filter(comuna != "c_g1_santiago")
+  filter(comuna != "c_g1_santiago") |> 
+  ### Agregar cero a codigo a cut_comuna
+  mutate(cut_comuna = str_pad(cut_comuna, 5, pad = "0")) |> 
+  ### codigo cut_proviuncia
+  mutate(cut_provincia = str_extract(cut_comuna, "^.{3}")) |> 
+  ### Relocacion de variables y cambio de nombres
+  relocate(cut_provincia, .after = region) |> 
+  rename(Reg = region,
+         cut_reg = cut_region,
+         cut_prov = cut_provincia,
+         Prov = provincia,
+         cut_comm = cut_comuna,
+         Comm = comuna,
+         Act = especie,
+         Agg = tipo_cultivo,
+         Sys = sistema,
+         Area = area_tot,
+         Yld = yield,
+         Lab = labour,
+         Ttl_Cost = ttl_cost,
+         CIR = cir) |> 
+  relocate(Agg, .after = "Comm") |> 
+  relocate(Yld, .after = "Area") |> 
+  relocate(Lab, .after = "Yld") |>
+  relocate(Ttl_Cost, .after = "Lab") |> 
+  ### Filtrar por regiones area de estudio (Atacama a region de Los Lagos)
+  filter(Reg %in% c("r_atacama","r_coquimbo", "r_valparaiso", "r_metropolitana",
+                       "r_ohiggins", "r_maule", "r_nuble", "r_biobio", "r_araucania",
+                       "r_los_rios", "r_los_lagos"))
   
 
-data_raw_01 |> 
-  mutate(cut_provincia = )
-  select(cut_comuna, provincia)
+names(data_raw_01)
 
 
+data_raw_01 |> count(region)
+  
 
+
+colSums(data_raw_01$area_tot)
 
 
