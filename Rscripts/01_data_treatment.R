@@ -98,10 +98,10 @@ data_raw_01 <- data_raw |>
                        "r_los_rios", "r_los_lagos")) |> 
   # Seleccion de cultivos a trabajar
   group_by(Act) |> 
-  mutate(count = n()) %>%
-  filter(count > 100) %>%
+  mutate(sum_area = sum(Area)) %>%
+  filter(sum_area > 317.44) %>%
   ungroup() |> 
-  select(-count) |> # Remove the count column, if not needed 
+  select(-sum_area) |> # Remove the sum_area column, if not needed 
   filter(Act != "huerta_casera_(princ._autoconsumo)",
          Act != "quinta_frutal",
          Act != "ostra",
@@ -116,12 +116,17 @@ data_raw_01 <- data_raw |>
          Act != "berries",
          Act != "moras_murta_zarzaparrilla",
          Act != "membrillo",
-         Act != "praderas"
+         Act != "praderas",
+         Act != "chicharo",
+         Act != "alcayota",
+         Act != "bounching_(consumo)",
+         Act != "camote",
   ) |> 
   mutate(Act = case_when(
     Act == "pimiento_(incl._todos_los_tipos)" ~ "pimiento",
     TRUE ~ Act
   ))
+
 
 
 ####################################### Tratamiento de datos para llenar vacíos en Yld
@@ -258,7 +263,8 @@ data_raw_02 <- data_raw_02 |>
     Reg == "r_nuble" & Act == "papa" & Yld < 0.01  ~ 4.98,
     Reg == "r_biobio" & Act == "papa" & Yld < 0.01  ~ 2.52,
     TRUE ~ Yld
-  )) 
+  )) |> 
+  filter(!is.na(Yld))
 
 
 
@@ -467,46 +473,494 @@ data_raw_03 <- data_raw_02_completed |>
 
 
 ####################################### Tratamiento de datos para llenar vacíos en CIR
-# Información de Informes DGA ESTIMACIONES DE DEMANDA DE AGUA Y PROYECCIONES FUTURAS. ZONA I NORTE. REGIONES I A IV dga 2007
-# Pags 237 y 240 para atacama
+# Información de Informes DGA ESTIMACIONES DE DEMANDA DE AGUA Y PROYECCIONES FUTURAS. ZONA I NORTE. REGIONES I A IV dga 2007 y ESTIMACIONES DE DEMANDA DE AGUA Y PROYECCIONES FUTURAS. ZONA II. REGIONES V A XII Y REGIÓN METROPOLITANA
+
 
 data_raw_04 <- data_raw_03 |> 
   mutate(CIR = case_when(
-    Reg == "r_atacama" & Act == "cebada" & is.na(CIR) ~ 53.59,
-    Reg == "r_atacama" & Act == "maiz" & is.na(CIR) ~ 4.65,
-    Reg == "r_atacama" & Act == "acelga" & is.na(CIR) ~ 0.396,
-    Reg == "r_atacama" & Act == "arveja_verde" & is.na(CIR) ~ 7.804,
-    Reg == "r_atacama" & Act == "betarraga" & is.na(CIR) ~ 12.06,
-    Reg == "r_atacama" & Act == "cebolla" & is.na(CIR) ~ 354.77,
-    Reg == "r_atacama" & Act == "choclo" & is.na(CIR) ~ 1.79,
-    Reg == "r_atacama" & Act == "haba" & is.na(CIR) ~ 130.33,
-    Reg == "r_atacama" & Act == "lechuga" & is.na(CIR) ~ 2.906,
-    Reg == "r_atacama" & Act == "melon" & is.na(CIR) ~ 155.22/53.4,
-    Reg == "r_atacama" & Act == "pimenton" & is.na(CIR) ~ 3.89,
-    Reg == "r_atacama" & Act == "poroto_verde" & is.na(CIR) ~ 14.015,
-    Reg == "r_atacama" & Act == "repollo" & is.na(CIR) ~ 7.993,
-    Reg == "r_atacama" & Act == "sandia" & is.na(CIR) ~ 209.21,
-    Reg == "r_atacama" & Act == "tomate" & is.na(CIR) ~ 314.06,
-    Reg == "r_atacama" & Act == "zapallo_italiano" & is.na(CIR) ~ 19.48,
-    Reg == "r_atacama" & Act == "zapallo"  & is.na(CIR) ~ 11.52,
-    Reg == "r_atacama" & Act == "naranjo" & is.na(CIR) ~ 575.98,
-    Reg == "r_atacama" & Act == "uva_de_mesa" & is.na(CIR) ~ 73579/6835,
+    # Región de Atacama (Falta agregar Ají, albahaca, Almendro, apio, manzana, pepino, pera, poroto, trebol)
+    Reg == "r_atacama" & Act == "acelga"  ~ 2.201/0.41,
+    Reg == "r_atacama" & Act == "aji"  ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "ajo"    ~ 3.188/0.16,
+    Reg == "r_atacama" & Act == "albahaca"    ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "alcachofa"    ~ 315.72/13.22,
+    Reg == "r_atacama" & Act == "almendro"    ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "apio"    ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "arveja_verde"  ~ 4.359/0.4,
+    Reg == "r_atacama" & Act == "cebada"  ~ 23.473/1.2,
+    Reg == "r_atacama" & Act == "maiz" ~ 2.541/0.27,
+    Reg == "r_atacama" & Act == "papa"   ~ 5.880/0.66,
+    Reg == "r_atacama" & Act == "betarraga"   ~ 13.922/1.14,
+    Reg == "r_atacama" & Act == "brocoli"   ~ 0.296/0.02,
+    Reg == "r_atacama" & Act == "cebolla" ~ 191.517/7.86,
+    Reg == "r_atacama" & Act == "choclo"   ~ 14.922/1.18,
+    Reg == "r_atacama" & Act == "cilantro"   ~ 0.531/0.06,
+    Reg == "r_atacama" & Act == "coliflor"   ~ 3.784/0.64,
+    Reg == "r_atacama" & Act == "esparrago"   ~ 44.37/3.6,
+    Reg == "r_atacama" & Act == "espinaca"   ~ 0.223/0.04,
+    Reg == "r_atacama" & Act == "haba"  ~ 394.617/36.21,
+    Reg == "r_atacama" & Act == "lechuga"   ~ 25.550/2.52,
+    Reg == "r_atacama" & Act == "manzana"   ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "melon"   ~ 169.521/12.41,
+    Reg == "r_atacama" & Act == "pepino"   ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "pera"   ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "pimiento"   ~ 189.356/16.654,
+    Reg == "r_atacama" & Act == "poroto"   ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "poroto_verde"   ~ 6.014/0.659,
+    Reg == "r_atacama" & Act == "repollo"   ~ 10.24/1.01,
+    Reg == "r_atacama" & Act == "sandia"   ~ 269.785/19.75,
+    Reg == "r_atacama" & Act == "tomate"   ~ 1182.725/72.801,
+    Reg == "r_atacama" & Act == "trebol"   ~ 0, # Buscar
+    Reg == "r_atacama" & Act == "zanahoria"   ~ 45.829/2.72,
+    Reg == "r_atacama" & Act == "zapallo_italiano"   ~ 149.671/12.67,
+    Reg == "r_atacama" & Act == "zapallo"    ~ 120.616/10.17,
+    Reg == "r_atacama" & Act == "ciruelo"    ~ 2.563/0.2,
+    Reg == "r_atacama" & Act == "duraznero"    ~ 8.084/0.7,
+    Reg == "r_atacama" & Act == "limonero"  ~ 193.543/18.698,
+    Reg == "r_atacama" & Act == "naranjo"  ~ 186.942/18.125,
+    Reg == "r_atacama" & Act == "nogal"    ~ 71.133/3.1,
+    Reg == "r_atacama" & Act == "palto"  ~ 504.953/37,
+    Reg == "r_atacama" & Act == "olivo"  ~ 1849.613/220.192,
+    Reg == "r_atacama" & Act == "uva_de_mesa"  ~ 16717.182/1955.226,
+   # Región de Coquimbo (Falta albahaca y Kiwi)
+    Reg == "r_coquimbo" & Act == "acelga"  ~ 1.201/0.4,
+    Reg == "r_coquimbo" & Act == "aji"  ~ 91.67/14,
+    Reg == "r_coquimbo" & Act == "ajo"  ~ 1.450/0.1,
+    Reg == "r_coquimbo" & Act == "albahaca"  ~ 0, # Buscar
+    Reg == "r_coquimbo" & Act == "alcachofa"  ~ 1865.133/138,
+    Reg == "r_coquimbo" & Act == "almendro"  ~ 540.399/76.8,
+    Reg == "r_coquimbo" & Act == "apio"  ~ 88.464/5.2,
+    Reg == "r_coquimbo" & Act == "arveja_grano_seco"  ~ 1.681/0.2,
+    Reg == "r_coquimbo" & Act == "arveja_verde"  ~ 232.045/29.5,
+    Reg == "r_coquimbo" & Act == "avena"  ~ 6.953/0.7,
+    Reg == "r_coquimbo" & Act == "betarraga"  ~ 5.173/0.6,
+    Reg == "r_coquimbo" & Act == "brocoli"  ~ 1.807/0.2,
+    Reg == "r_coquimbo" & Act == "cebada"  ~ 178.842/17,
+    Reg == "r_coquimbo" & Act == "cebolla"  ~ 66.738/4.7,
+    Reg == "r_coquimbo" & Act == "choclo"  ~ 529.939/61.1,
+    Reg == "r_coquimbo" & Act == "cilantro"  ~ 47.384/9.6,
+    Reg == "r_coquimbo" & Act == "coliflor"  ~ 3.261/1.8,
+    Reg == "r_coquimbo" & Act == "damasco"  ~ 22.352/1.9,
+    Reg == "r_coquimbo" & Act == "espinaca"  ~ 0.102/0.1,
+    Reg == "r_coquimbo" & Act == "haba"  ~ 297.872/37.9,
+    Reg == "r_coquimbo" & Act == "kiwi"  ~ 0, # Buscar
+    Reg == "r_coquimbo" & Act == "lechuga"  ~ 109.240/15.2,
+    Reg == "r_coquimbo" & Act == "limonero"  ~ 728.186/124.7,
+    Reg == "r_coquimbo" & Act == "melon"  ~ 45.643/6.4,
+    Reg == "r_coquimbo" & Act == "nogal"  ~ 386.368/32.9,
+    Reg == "r_coquimbo" & Act == "pepino"  ~ 70.702/15.6,
+    Reg == "r_coquimbo" & Act == "pera"  ~ 54.701/7.3,
+    Reg == "r_coquimbo" & Act == "pimiento"  ~ 2034.989/264.6,
+    Reg == "r_coquimbo" & Act == "poroto_verde"  ~ 227.692/56.7,
+    Reg == "r_coquimbo" & Act == "repollo"  ~ 11.566/1.6,
+    Reg == "r_coquimbo" & Act == "sandia"  ~ 10.773/1.5,
+    Reg == "r_coquimbo" & Act == "tomate"  ~ 568.463/77.5,
+    Reg == "r_coquimbo" & Act == "uva_de_mesa"  ~ 3417.078/568.5,
+    Reg == "r_coquimbo" & Act == "zanahoria"  ~ 8.536/0.7,
+    Reg == "r_coquimbo" & Act == "zapallo"  ~ 2.944/0.5,
+    Reg == "r_coquimbo" & Act == "zapallo_italiano"  ~ 301.833/42.4,
+    # Región de Valparaíso (Falta Albahaca y Avellano Europeo)
+    Reg == "r_valparaiso" & Act == "acelga"  ~ 1.642/2.3,
+    Reg == "r_valparaiso" & Act == "aji"  ~ 8.534/1,
+    Reg == "r_valparaiso" & Act == "ajo"  ~ 65.583/6.5,
+    Reg == "r_valparaiso" & Act == "albahaca"  ~ 0, #Buscar
+    Reg == "r_valparaiso" & Act == "alcachofa"  ~  139.897/9.9,
+    Reg == "r_valparaiso" & Act == "almendro"  ~ 214.015/32.9,
+    Reg == "r_valparaiso" & Act == "apio"  ~ 9.682/0.5,
+    Reg == "r_valparaiso" & Act == "arveja_grano_seco"  ~ 5.203/0.5,
+    Reg == "r_valparaiso" & Act == "arveja_verde"  ~ 14.056/2.2,
+    Reg == "r_valparaiso" & Act == "avellano_europeo"  ~ 0, # Buscar
+    Reg == "r_valparaiso" & Act == "avena"  ~ 78.555/15,
+    Reg == "r_valparaiso" & Act == "betarraga"  ~ 3.411/0.4,
+    Reg == "r_valparaiso" & Act == "brocoli"  ~ 133.745/13.4,
+    Reg == "r_valparaiso" & Act == "cebada"  ~ 8.379/1.6,
+    Reg == "r_valparaiso" & Act == "cebolla"  ~ 138.621/11.5,
+    Reg == "r_valparaiso" & Act == "choclo"  ~ 87.296/12.8,
+    Reg == "r_valparaiso" & Act == "cilantro"  ~ 1.864/0.6,
+    Reg == "r_valparaiso" & Act == "coliflor"  ~ 4.040/6.7,
+    Reg == "r_valparaiso" & Act == "damasco"  ~ 748.976/79.2,
+    Reg == "r_valparaiso" & Act == "espinaca"  ~ 0.388/2,
+    Reg == "r_valparaiso" & Act == "esparrago"  ~ 740.662/69.5,
+    Reg == "r_valparaiso" & Act == "garbanzo"  ~ 6.090/0.5,
+    Reg == "r_valparaiso" & Act == "haba"  ~ 116.644/19.1,
+    Reg == "r_valparaiso" & Act == "kiwi"  ~ 8.759/0.7,
+    Reg == "r_valparaiso" & Act == "lechuga"  ~ 466.432/61.3,
+    Reg == "r_valparaiso" & Act == "lenteja"  ~ 11.372/1,
+    Reg == "r_valparaiso" & Act == "limonero"  ~ 48.512/7.5,
+    Reg == "r_valparaiso" & Act == "melon"  ~ 69.014/9.1,
+    Reg == "r_valparaiso" & Act == "nogal"  ~ 14244.670/1004.8,
+    Reg == "r_valparaiso" & Act == "pepino"  ~ 5.789/0.8,
+    Reg == "r_valparaiso" & Act == "pera"  ~ 1842.258/140.9,
+    Reg == "r_valparaiso" & Act == "pimiento"  ~ 251.134/30.6,
+    Reg == "r_valparaiso" & Act == "poroto_verde"  ~ 101.376/28.8,
+    Reg == "r_valparaiso" & Act == "repollo"  ~ 44.132/5.8,
+    Reg == "r_valparaiso" & Act == "sandia"  ~ 64.464/8.5,
+    Reg == "r_valparaiso" & Act == "tomate"  ~ 422.644/34.2,
+    Reg == "r_valparaiso" & Act == "uva_de_mesa"  ~ 55030.482/6153.5,
+    Reg == "r_valparaiso" & Act == "zanahoria"  ~ 398.913/28.6,
+    Reg == "r_valparaiso" & Act == "zapallo"  ~ 21.6/4.5,
+    Reg == "r_valparaiso" & Act == "zapallo_italiano"  ~ 60.476/7.7,
+   # Región Metropolitana (Falta Albahaca, Garbanzo, Lenteja, Uva de mesa)
+    Reg == "r_metropolitana" & Act == "acelga"  ~ 114.237/57.9,
+    Reg == "r_metropolitana" & Act == "aji"  ~ 227.957/19.8,
+    Reg == "r_metropolitana" & Act == "ajo"  ~ 7367.485/535,
+    Reg == "r_metropolitana" & Act == "albahaca"  ~ 0, #Buscar
+    Reg == "r_metropolitana" & Act == "alcachofa"  ~  3055.408/209.8,
+    Reg == "r_metropolitana" & Act == "almendro"  ~ 18984.344/1748.4,
+    Reg == "r_metropolitana" & Act == "apio"  ~ 844.057/42.4,
+    Reg == "r_metropolitana" & Act == "arveja_grano_seco"  ~ 4.435/0.6,
+    Reg == "r_metropolitana" & Act == "arveja_verde"  ~ 3491.007/396.3,
+    Reg == "r_metropolitana" & Act == "avena"  ~ 738.521/78.7,
+    Reg == "r_metropolitana" & Act == "betarraga"  ~ 798.965/72.2,
+    Reg == "r_metropolitana" & Act == "brocoli"  ~ 1345.016/130.8,
+    Reg == "r_metropolitana" & Act == "cebada"  ~ 694.416/74,
+    Reg == "r_metropolitana" & Act == "cebolla"  ~ 19166.762/1166.5,
+    Reg == "r_metropolitana" & Act == "choclo"  ~ 7547.142/779.1,
+    Reg == "r_metropolitana" & Act == "cilantro"  ~ 61.674/12.1,
+    Reg == "r_metropolitana" & Act == "coliflor"  ~ 128.423/227.7,
+    Reg == "r_metropolitana" & Act == "damasco"  ~ 9278.205/717.4,
+    Reg == "r_metropolitana" & Act == "espinaca"  ~ 1.523/8.1,
+    Reg == "r_metropolitana" & Act == "esparrago"  ~ 918.540/84,
+    Reg == "r_metropolitana" & Act == "garbanzo"  ~ 0, #Buscar
+    Reg == "r_metropolitana" & Act == "haba"  ~ 4512.270/718.4,
+    Reg == "r_metropolitana" & Act == "kiwi"  ~ 6588.141/524.5,
+    Reg == "r_metropolitana" & Act == "lechuga"  ~ 842.748/108.1,
+    Reg == "r_metropolitana" & Act == "lenteja"  ~ 0, #Buscar
+    Reg == "r_metropolitana" & Act == "limonero"  ~ 6026.722/797.1,
+    Reg == "r_metropolitana" & Act == "melon"  ~ 1280.048/164.7,
+    Reg == "r_metropolitana" & Act == "nogal"  ~ 60883.381/3864.6,
+    Reg == "r_metropolitana" & Act == "pepino"  ~ 377.678/50.9,
+    Reg == "r_metropolitana" & Act == "pera"  ~ 8845.885/568.1,
+    Reg == "r_metropolitana" & Act == "pimiento"  ~ 1076.992/128,
+    Reg == "r_metropolitana" & Act == "poroto_verde"  ~ 3738.236/1044.2,
+    Reg == "r_metropolitana" & Act == "remolacha"  ~ 277.932/23,
+    Reg == "r_metropolitana" & Act == "repollo"  ~ 1014.260/130.1,
+    Reg == "r_metropolitana" & Act == "sandia"  ~ 1454.918/187.2,
+    Reg == "r_metropolitana" & Act == "tomate"  ~ 16013.481/1261.5,
+    Reg == "r_metropolitana" & Act == "uva_de_mesa"  ~ 0, #Buscar
+    Reg == "r_metropolitana" & Act == "zanahoria"  ~ 1192.102/82.9,
+    Reg == "r_metropolitana" & Act == "zapallo"  ~ 4488.999/919.5,
+    Reg == "r_metropolitana" & Act == "zapallo_italiano"  ~ 1066.939/131.9,
+    # Region de Ohiggins (Falta Albahaca, espinaca)
+    Reg == "r_ohiggins" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_ohiggins" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_ohiggins" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_ohiggins" & Act == "albahaca"  ~ 0, #Buscar
+    Reg == "r_ohiggins" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_ohiggins" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_ohiggins" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_ohiggins" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_ohiggins" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_ohiggins" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_ohiggins" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_ohiggins" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_ohiggins" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_ohiggins" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_ohiggins" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_ohiggins" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_ohiggins" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_ohiggins" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_ohiggins" & Act == "espinaca"  ~ 0, #Buscar
+    Reg == "r_ohiggins" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_ohiggins" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_ohiggins" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_ohiggins" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_ohiggins" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_ohiggins" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_ohiggins" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_ohiggins" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_ohiggins" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_ohiggins" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_ohiggins" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_ohiggins" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_ohiggins" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_ohiggins" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_ohiggins" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_ohiggins" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_ohiggins" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_ohiggins" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_ohiggins" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_ohiggins" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_ohiggins" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    # Región del Maule (Falta por cambiar completo)
+    Reg == "r_maule" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_maule" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_maule" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_maule" & Act == "albahaca"  ~ 0,
+    Reg == "r_maule" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_maule" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_maule" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_maule" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_maule" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_maule" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_maule" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_maule" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_maule" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_maule" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_maule" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_maule" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_maule" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_maule" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_maule" & Act == "espinaca"  ~ 0,
+    Reg == "r_maule" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_maule" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_maule" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_maule" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_maule" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_maule" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_maule" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_maule" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_maule" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_maule" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_maule" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_maule" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_maule" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_maule" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_maule" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_maule" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_maule" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_maule" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_maule" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_maule" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_maule" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    # Región del Ñuble (Falta por cambiar completo)
+    Reg == "r_nuble" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_nuble" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_nuble" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_nuble" & Act == "albahaca"  ~ 0,
+    Reg == "r_nuble" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_nuble" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_nuble" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_nuble" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_nuble" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_nuble" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_nuble" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_nuble" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_nuble" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_nuble" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_nuble" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_nuble" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_nuble" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_nuble" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_nuble" & Act == "espinaca"  ~ 0,
+    Reg == "r_nuble" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_nuble" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_nuble" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_nuble" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_nuble" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_nuble" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_nuble" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_nuble" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_nuble" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_nuble" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_nuble" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_nuble" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_nuble" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_nuble" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_nuble" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_nuble" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_nuble" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_nuble" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_nuble" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_nuble" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_nuble" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    # Región del BioBio (Falta por cambiar completo)
+    Reg == "r_biobio" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_biobio" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_biobio" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_biobio" & Act == "albahaca"  ~ 0,
+    Reg == "r_biobio" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_biobio" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_biobio" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_biobio" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_biobio" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_biobio" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_biobio" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_biobio" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_biobio" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_biobio" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_biobio" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_biobio" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_biobio" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_biobio" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_biobio" & Act == "espinaca"  ~ 0,
+    Reg == "r_biobio" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_biobio" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_biobio" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_biobio" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_biobio" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_biobio" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_biobio" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_biobio" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_biobio" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_biobio" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_biobio" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_biobio" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_biobio" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_biobio" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_biobio" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_biobio" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_biobio" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_biobio" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_biobio" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_biobio" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_biobio" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    # Región de la Araucanía (Falta por cambiar completo)
+    Reg == "r_araucania" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_araucania" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_araucania" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_araucania" & Act == "albahaca"  ~ 0,
+    Reg == "r_araucania" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_araucania" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_araucania" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_araucania" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_araucania" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_araucania" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_araucania" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_araucania" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_araucania" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_araucania" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_araucania" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_araucania" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_araucania" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_araucania" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_araucania" & Act == "espinaca"  ~ 0,
+    Reg == "r_araucania" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_araucania" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_araucania" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_araucania" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_araucania" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_araucania" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_araucania" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_araucania" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_araucania" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_araucania" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_araucania" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_araucania" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_araucania" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_araucania" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_araucania" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_araucania" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_araucania" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_araucania" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_araucania" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_araucania" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_araucania" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    # Región de los Ríos (Falta por cambiar completo)
+    Reg == "r_los_rios" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_los_rios" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_los_rios" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_los_rios" & Act == "albahaca"  ~ 0,
+    Reg == "r_los_rios" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_los_rios" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_los_rios" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_los_rios" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_los_rios" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_los_rios" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_los_rios" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_los_rios" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_los_rios" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_los_rios" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_los_rios" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_los_rios" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_los_rios" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_los_rios" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_los_rios" & Act == "espinaca"  ~ 0,
+    Reg == "r_los_rios" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_los_rios" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_los_rios" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_los_rios" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_los_rios" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_los_rios" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_los_rios" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_los_rios" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_los_rios" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_los_rios" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_los_rios" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_los_rios" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_los_rios" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_los_rios" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_los_rios" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_los_rios" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_los_rios" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_los_rios" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_los_rios" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_los_rios" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_los_rios" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    # Región de los Lagos (Falta por cambiar completo)
+    Reg == "r_los_lagos" & Act == "acelga"  ~ 21.141/17.3,
+    Reg == "r_los_lagos" & Act == "aji"  ~ 851.037/81.4,
+    Reg == "r_los_lagos" & Act == "ajo"  ~ 3878.192/320.3,
+    Reg == "r_los_lagos" & Act == "albahaca"  ~ 0,
+    Reg == "r_los_lagos" & Act == "alcachofa"  ~  540.263/43.7,
+    Reg == "r_los_lagos" & Act == "almendro"  ~ 19303.277/2748.6,
+    Reg == "r_los_lagos" & Act == "apio"  ~ 169.171/9.6,
+    Reg == "r_los_lagos" & Act == "arveja_grano_seco"  ~ 287.971/29.7,
+    Reg == "r_los_lagos" & Act == "arveja_verde"  ~ 1661.964/209.5,
+    Reg == "r_los_lagos" & Act == "avena"  ~ 700.289/98.3,
+    Reg == "r_los_lagos" & Act == "betarraga"  ~ 309.060/30.3,
+    Reg == "r_los_lagos" & Act == "brocoli"  ~ 411.953/45.2,
+    Reg == "r_los_lagos" & Act == "cebada"  ~ 438.413/57.8,
+    Reg == "r_los_lagos" & Act == "cebolla"  ~ 10290.365/723.4,
+    Reg == "r_los_lagos" & Act == "choclo"  ~ 34941.438/2483.4,
+    Reg == "r_los_lagos" & Act == "cilantro"  ~ 36.347/8.4,
+    Reg == "r_los_lagos" & Act == "coliflor"  ~ 14.245/122.8,
+    Reg == "r_los_lagos" & Act == "damasco"  ~ 4339.371/617.9,
+    Reg == "r_los_lagos" & Act == "espinaca"  ~ 0,
+    Reg == "r_los_lagos" & Act == "esparrago"  ~ 353.700/36,
+    Reg == "r_los_lagos" & Act == "garbanzo"  ~ 10.557/1,
+    Reg == "r_los_lagos" & Act == "haba"  ~ 877.682/124.6,
+    Reg == "r_los_lagos" & Act == "kiwi"  ~ 16402.716/1210.9,
+    Reg == "r_los_lagos" & Act == "lechuga"  ~ 3375.797/349.1,
+    Reg == "r_los_lagos" & Act == "lenteja"  ~ 10.557/1,
+    Reg == "r_los_lagos" & Act == "limonero"  ~ 5270.160/722.9,
+    Reg == "r_los_lagos" & Act == "melon"  ~ 11160.121/1141,
+    Reg == "r_los_lagos" & Act == "nogal"  ~ 19512.817/1324,
+    Reg == "r_los_lagos" & Act == "pepino"  ~ 868.634/132.9,
+    Reg == "r_los_lagos" & Act == "pera"  ~ 35708.621/2416.5,
+    Reg == "r_los_lagos" & Act == "pimiento"  ~ 661.919/91.4,
+    Reg == "r_los_lagos" & Act == "poroto_verde"  ~ 2370.547/230.8,
+    Reg == "r_los_lagos" & Act == "remolacha"  ~ 5987.279/410.2,
+    Reg == "r_los_lagos" & Act == "repollo"  ~ 1338.597/201.9,
+    Reg == "r_los_lagos" & Act == "sandia"  ~ 15912.481/1302.7,
+    Reg == "r_los_lagos" & Act == "tomate"  ~ 22504.212/1344.9,
+    Reg == "r_los_lagos" & Act == "uva_de_mesa"  ~ 71709/9055.3,
+    Reg == "r_los_lagos" & Act == "zanahoria"  ~ 2247.283/174.1,
+    Reg == "r_los_lagos" & Act == "zapallo"  ~ 2455.022/666.4,
+    Reg == "r_los_lagos" & Act == "zapallo_italiano"  ~ 821.417/115.4,
+    TRUE ~ CIR
+  )) |> 
+  mutate(CIR = case_when(
+    Sys == "secano" ~ 0,
     TRUE ~ CIR
   ))
 
+
 summary(data_raw_04)
 
-
-
-
-
-
-data_raw_04|>
+data_raw_01 |> 
   group_by(Reg, Act) |> 
-  filter(Reg == "r_atacama" | Reg == "r_coquimbo") |> 
+  count() |> 
+  print(n=588)
+
+
+data_raw_04 |>
+  group_by(Reg, Act) |> 
   summarise(CIR_prom = mean(CIR, na.rm = TRUE)) |>
   print(n = 588)
-  
+
+test_draw03 <- data_raw_04 |> 
+  group_by(Reg, Act) |> 
+  filter(Reg == "r_coquimbo") |> 
+  summarise(CIR_prom = mean(CIR, na.rm = TRUE)) |>
+  print(n = 588)
+
+test_draw04 <- data_raw_04 |> 
+  group_by(Reg, Act) |> 
+  filter(Reg == "r_valparaiso") |> 
+  summarise(CIR_prom = mean(CIR, na.rm = TRUE)) |>
+  print(n = 588)
+
 
 data_raw_03 |>
   group_by(Reg, Act) |> 
