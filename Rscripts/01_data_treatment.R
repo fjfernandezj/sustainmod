@@ -15,7 +15,7 @@
 # library
 library(tidyverse)   # CRAN v2.0.0 
 library(lubridate)   # CRAN v1.7.10 
-library(xlsx)
+#library(xlsx)
 library(readxl)
 library(stringr)
 
@@ -31,7 +31,8 @@ library(stringr)
 
 data_raw <- read_xlsx("data_raw/bd_final.xlsx", col_types = 
                         c("text", "numeric", "text", "text", "text", "text", "text", 
-                          "numeric", "numeric", "numeric", "numeric", "numeric"))
+                          "numeric", "numeric", "numeric", "numeric", "numeric")) |>  
+  mutate(especie = as.factor(especie))
 
 ## Mapping Regions- Provinces - Communes
 source("Rscripts/00_mapping_regiones_provincias_comunas_v02.R")
@@ -97,9 +98,9 @@ data_raw_01 <- data_raw |>
                        "r_ohiggins", "r_maule", "r_nuble", "r_biobio", "r_araucania",
                        "r_los_rios", "r_los_lagos")) |> 
   # Seleccion de cultivos a trabajar
-  group_by(Act) |> 
+  group_by(Reg, Act) |> 
   mutate(sum_area = sum(Area)) %>%
-  filter(sum_area > 317.44) %>%
+  filter(sum_area > 100) %>% # Se consideran aquellos cultivos cuya superficie sea 100 hectareas o más en total por region (75)
   ungroup() |> 
   select(-sum_area) |> # Remove the sum_area column, if not needed 
   filter(Act != "huerta_casera_(princ._autoconsumo)",
@@ -121,12 +122,16 @@ data_raw_01 <- data_raw |>
          Act != "alcayota",
          Act != "bounching_(consumo)",
          Act != "camote",
+         Act != "achicoria",
+         Act != "raps",
+         Act != "maravilla",
+         Act != "triticale"
   ) |> 
   mutate(Act = case_when(
     Act == "pimiento_(incl._todos_los_tipos)" ~ "pimiento",
     TRUE ~ Act
-  ))
-
+  )) %>% 
+  mutate(Act = as.factor(Act)) 
 
 
 ####################################### Tratamiento de datos para llenar vacíos en Yld
@@ -273,7 +278,7 @@ Aggr <- c("cereales", "frutales", "forrajeras", "hortalizas", "leguminosas _y_tu
 
 
 
-# Calcular promedios usando un ciclo o lapply para Biobio
+# Calcular promedios regionales usando un ciclo o lapply para Biobio
 Lab_promedios_biobio <- lapply(cultivos, function(cultivo) {
   data_raw_02 %>% 
     filter(Act == cultivo, Reg == "r_biobio") %>% 
@@ -282,7 +287,7 @@ Lab_promedios_biobio <- lapply(cultivos, function(cultivo) {
 })
 names(Lab_promedios_biobio) <- cultivos
 
-# Calcular promedios usando un ciclo o lapply para Biobio
+# Calcular promedios regionales usando un ciclo o lapply para Coquimbo
 Lab_promedios_coquimbo <- lapply(cultivos, function(cultivo) {
   data_raw_02 %>% 
     filter(Act == cultivo, Reg == "r_coquimbo") %>% 
@@ -298,7 +303,7 @@ Lab_promedios_biobio_df <- data.frame(
   promedio_Lab = unlist(Lab_promedios_biobio)
 )
 
-# Convertir Lab_promedios_biobio en un data frame
+# Convertir Lab_promedios_coquimbo en un data frame
 Lab_promedios_coquimbo_df <- data.frame(
   Act = names(Lab_promedios_coquimbo),
   promedio_Lab = unlist(Lab_promedios_coquimbo)
@@ -330,7 +335,7 @@ data_raw_02 <- data_raw_02 %>%
   ) %>%
   select(-promedio_Lab)
 
-# Actualizar data_raw_02 datos los lagos con datos biobio
+# Actualizar data_raw_02 datos atacama con datos coquimbo
 data_raw_02 <- data_raw_02 %>%
   left_join(Lab_promedios_coquimbo_df, by = "Act") %>%
   mutate(
@@ -350,15 +355,30 @@ data_raw_02_joined <- data_raw_02 %>%
 
 # Rellena los NA's con los promedios correspondientes
 data_raw_02_completed <- data_raw_02_joined %>%
-  mutate(Lab = ifelse(is.na(Lab), Lab_prom, Lab))
+  mutate(Lab = ifelse(is.na(Lab), Lab_prom, Lab)) |> 
+  mutate(Lab = ifelse(is.nan(Lab), Lab_prom, Lab))
 
 # Opcional: Si ya no necesitas la columna de promedios, puedes removerla
 data_raw_02_completed <- select(data_raw_02_completed, -Lab_prom) |> 
   mutate(Lab = case_when(
     Agg == "industriales" ~ 64.46, # Basado en JH para remolacha Fuente: Costos Directos de Produccion de cultivos INIA QUILAMAPU
     TRUE ~ Lab
-  ))
-
+  )) |> 
+  # Cultivos restantes en Atacama Labour basado en mano de obra región de Coquimbo
+  mutate(Lab = case_when(
+    Reg == "r_atacama" & Act == "alfalfa" ~ 3.441667,
+    Reg == "r_atacama" & Act == "tomate" ~ 58.235,
+    Reg == "r_atacama" & Act == "uva_de_mesa" ~ 65.72498,
+    Reg == "r_atacama" & Act == "mandarina" ~ 65.72498,
+    TRUE ~ Lab
+  )) |> 
+  # Cultivos restantes en Los Lagos Labour basado en mano de obra región de Ohiggins
+  mutate(Lab = case_when(
+    Reg == "r_los_lagos" & Act == "ajo" ~ 44.845,
+    TRUE ~ Lab
+))
+    
+summary(data_raw_02_completed)
 
 ####################################### Tratamiento de datos para llenar vacíos en Ttl_Cost
 
@@ -448,6 +468,7 @@ data_raw_03 <- data_raw_02_completed |>
     Act == "maiz" & Reg == "r_atacama" ~ 862005, # promedio costos totales Coquimbo
     Act == "pepino" & Reg == "r_atacama" ~ 5935951, # promedio costos totales Coquimbo
     Act == "pimiento" & Reg == "r_atacama" ~ 7013240, # promedio costos totales Coquimbo
+    Act == "pimiento" & Reg == "r_valparaiso" ~ 7013240, # promedio costos totales Coquimbo --> Corrección antes estaba el valos de ficha técnica para pimentón en invernadero 
     Act == "poroto" & Reg == "r_atacama" ~ 1990602, # promedio costos totales Coquimbo
     Act == "poroto_verde" & Reg == "r_atacama" ~ 4359130, # promedio costos totales Coquimbo
     Act == "repollo" & Reg == "r_atacama" ~ 5978905, # promedio costos totales Coquimbo
@@ -467,10 +488,14 @@ data_raw_03 <- data_raw_02_completed |>
     Act == "ballica" & Reg == "r_metropolitana" ~ 1610048, # promedio costos totales Bio Bio
     Act == "ballica" & Reg == "r_valparaiso" ~ 1610048, # promedio costos totales Bio Bio
     Act == "aji" ~ 6800131, # Ficha Tecnica Indap Maule
+    Act == "mandarina" ~ 2673619,# https://bibliotecadigital.ciren.cl/server/api/core/bitstreams/14fa17da-fdcb-4b78-8f22-5630baca15db/content Costo ajustado a IPC (DIC 2011 - DIC 2023)
     TRUE ~ Ttl_Cost
   )
          )
 
+data_raw_03 |> 
+  group_by(Reg, Act) |> 
+  summarise(no_data = is.na(Ttl_Cost))
 
 ####################################### Tratamiento de datos para llenar vacíos en CIR
 # Información de Informes DGA ESTIMACIONES DE DEMANDA DE AGUA Y PROYECCIONES FUTURAS. ZONA I NORTE. REGIONES I A IV dga 2007 y ESTIMACIONES DE DEMANDA DE AGUA Y PROYECCIONES FUTURAS. ZONA II. REGIONES V A XII Y REGIÓN METROPOLITANA
@@ -938,37 +963,4 @@ data_raw_04 <- data_raw_03 |>
 
 summary(data_raw_04)
 
-data_raw_01 |> 
-  group_by(Reg, Act) |> 
-  count() |> 
-  print(n=588)
-
-
-data_raw_04 |>
-  group_by(Reg, Act) |> 
-  summarise(CIR_prom = mean(CIR, na.rm = TRUE)) |>
-  print(n = 588)
-
-test_draw03 <- data_raw_04 |> 
-  group_by(Reg, Act) |> 
-  filter(Reg == "r_coquimbo") |> 
-  summarise(CIR_prom = mean(CIR, na.rm = TRUE)) |>
-  print(n = 588)
-
-test_draw04 <- data_raw_04 |> 
-  group_by(Reg, Act) |> 
-  filter(Reg == "r_valparaiso") |> 
-  summarise(CIR_prom = mean(CIR, na.rm = TRUE)) |>
-  print(n = 588)
-
-
-data_raw_03 |>
-  group_by(Reg, Act) |> 
-  summarise(cir_mean = mean(CIR, na.rm = TRUE)) |>
-    filter(Act == "naranjo")
-
-
-data_raw_02_completed |> 
-  group_by(Reg, Act) |> 
-  summarise(Lab_prom = mean(Lab, na.rm = TRUE)) |> 
-  print(n=588)
+# Es necesario revisar costos totales de hortalizas tales como tomate, pepino, ajo y otros!!!!!
