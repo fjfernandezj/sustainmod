@@ -3,13 +3,20 @@
 ## Nombre_archivo: 01_data_treatment       
 ## Versión:        01                               
 ## Autor:          Francisco Fernández                      
-## Deacripción:    Tratamiento de información Pre-tratada para obtener un formato adecuado para                            su lectura en GAMS 
-## Notas:  **      
-##         **      
+## Deacripción:    Tratamiento de información Pre-tratada para obtener un formato adecuado para su lectura en GAMS 
+##
+## Notas:  ** Información pre-tratada proviene de:
+##                * Censo Agropecuario (INE, 2021- 2022)
+##                * Fichas de Costos Odepa (ODEPA)
+##                * Fichas Técnicas INDAP 
+##                * Información de modeos anteriores
+##
+##              
 ##
 ##---
 
 #install packages
+install.packages("writexl")
 
 # Cargar paquetes Seccion 1 ---------------------------------------------------------
 # library
@@ -18,11 +25,11 @@ library(lubridate)   # CRAN v1.7.10
 #library(xlsx)
 library(readxl)
 library(stringr)
-
+library(writexl)
 
 ##%######################################################%##
 #                                                          #
-#                 Seccion 1: EDA                        ####
+#                 Seccion 1: Data Treatment                        ####
 #                                                          #
 ##%######################################################%##
 
@@ -746,114 +753,114 @@ data_raw_04 <- data_raw_03 |>
     Reg == "r_maule" & Act == "zanahoria"  ~ 9.178/0.7,
     Reg == "r_maule" & Act == "zapallo"  ~ 0.412/0.1,
     Reg == "r_maule" & Act == "zapallo_italiano"  ~ 1.468/0.2,
-    # Región del Ñuble (Falta por cambiar completo)
-    Reg == "r_nuble" & Act == "alfalfa"  ~ 0,
-    Reg == "r_nuble" & Act == "arroz"  ~ 0,
-    Reg == "r_nuble" & Act == "arveja_grano_seco"  ~ 0,
-    Reg == "r_nuble" & Act == "arveja_verde"  ~ 0,
-    Reg == "r_nuble" & Act == "avellano_europeo"  ~ 0,
-    Reg == "r_nuble" & Act == "avena"  ~ 0,
-    Reg == "r_nuble" & Act == "ballica"  ~ 0,
-    Reg == "r_nuble" & Act == "castaño"  ~ 0,
-    Reg == "r_nuble" & Act == "cebada"  ~ 0,
-    Reg == "r_nuble" & Act == "cebolla"  ~ 0,
-    Reg == "r_nuble" & Act == "cerezo"  ~ 0,
-    Reg == "r_nuble" & Act == "choclo"  ~ 0,
-    Reg == "r_nuble" & Act == "esparrago"  ~ 0,
-    Reg == "r_nuble" & Act == "festuca"  ~ 0,
-    Reg == "r_nuble" & Act == "kiwi"  ~ 0,
-    Reg == "r_nuble" & Act == "lechuga"  ~ 0,
-    Reg == "r_nuble" & Act == "lenteja"  ~ 0,
-    Reg == "r_nuble" & Act == "maiz"  ~ 0,
-    Reg == "r_nuble" & Act == "manzana"  ~ 0,
-    Reg == "r_nuble" & Act == "nogal"  ~ 0,
-    Reg == "r_nuble" & Act == "olivo"  ~ 0,
-    Reg == "r_nuble" & Act == "papa"  ~ 0,
-    Reg == "r_nuble" & Act == "poroto"  ~ 0,
-    Reg == "r_nuble" & Act == "poroto_verde"  ~ 0,
-    Reg == "r_nuble" & Act == "remolacha"  ~ 0,
-    Reg == "r_nuble" & Act == "tomate"  ~ 0,
-    Reg == "r_nuble" & Act == "trebol"  ~ 0,
-    Reg == "r_nuble" & Act == "trigo"  ~ 0,
-    Reg == "r_nuble" & Act == "zanahoria"  ~ 0,
-    Reg == "r_nuble" & Act == "zapallo"  ~ 0,
-    # Región del BioBio (Falta por cambiar completo)
-    Reg == "r_biobio" & Act == "alfalfa"  ~ 0,
-    Reg == "r_biobio" & Act == "arveja_grano_seco"  ~ 0,
-    Reg == "r_biobio" & Act == "arveja_verde"  ~ 0,
-    Reg == "r_biobio" & Act == "avellano_europeo"  ~ 0,
-    Reg == "r_biobio" & Act == "avena"  ~ 0,
-    Reg == "r_biobio" & Act == "ballica"  ~ 0,
-    Reg == "r_biobio" & Act == "castaño"  ~ 0,
-    Reg == "r_biobio" & Act == "cebolla"  ~ 0,
-    Reg == "r_biobio" & Act == "cerezo"  ~ 0,
-    Reg == "r_biobio" & Act == "choclo"  ~ 0,
-    Reg == "r_biobio" & Act == "esparrago"  ~ 0,
-    Reg == "r_biobio" & Act == "festuca"  ~ 0,
-    Reg == "r_biobio" & Act == "lechuga"  ~ 0,
-    Reg == "r_biobio" & Act == "lenteja"  ~ 0,
-    Reg == "r_biobio" & Act == "maiz"  ~ 0,
-    Reg == "r_biobio" & Act == "manzana"  ~ 0,
-    Reg == "r_biobio" & Act == "nogal"  ~ 0,
-    Reg == "r_biobio" & Act == "papa"  ~ 0,
-    Reg == "r_biobio" & Act == "poroto"  ~ 0,
-    Reg == "r_biobio" & Act == "remolacha"  ~ 0,
-    Reg == "r_biobio" & Act == "tomate"  ~ 0,
-    Reg == "r_biobio" & Act == "trebol"  ~ 0,
-    Reg == "r_biobio" & Act == "trigo"  ~ 0,
-    Reg == "r_biobio" & Act == "uva_de_mesa"  ~ 0,
-    Reg == "r_biobio" & Act == "zanahoria"  ~ 0,
-    # Región de la Araucanía (Falta por cambiar completo)
-    Reg == "r_araucania" & Act == "acelga"  ~ 0,
-    Reg == "r_araucania" & Act == "alfalfa"  ~ 0,
-    Reg == "r_araucania" & Act == "arveja_grano_seco"  ~ 0,
-    Reg == "r_araucania" & Act == "arveja_verde"  ~ 0,
-    Reg == "r_araucania" & Act == "avellano_europeo"  ~ 0, 
-    Reg == "r_araucania" & Act == "avena"  ~ 0,
-    Reg == "r_araucania" & Act == "ballica"  ~ 0,
-    Reg == "r_araucania" & Act == "castaño"  ~ 0,
-    Reg == "r_araucania" & Act == "cebada"  ~ 0,
-    Reg == "r_araucania" & Act == "cerezo"  ~ 0,
-    Reg == "r_araucania" & Act == "choclo"  ~ 0,
-    Reg == "r_araucania" & Act == "cilantro"  ~ 0,
-    Reg == "r_araucania" & Act == "haba"  ~ 0,
-    Reg == "r_araucania" & Act == "lechuga"  ~ 0,
-    Reg == "r_araucania" & Act == "lenteja"  ~ 0,
-    Reg == "r_araucania" & Act == "maiz"  ~ 0,
-    Reg == "r_araucania" & Act == "manzana"  ~ 0,
-    Reg == "r_araucania" & Act == "nogal"  ~ 0,
-    Reg == "r_araucania" & Act == "papa"  ~ 0,
-    Reg == "r_araucania" & Act == "poroto"  ~ 0,
-    Reg == "r_araucania" & Act == "poroto_verde"  ~ 0,
-    Reg == "r_araucania" & Act == "remolacha"  ~ 0,
-    Reg == "r_araucania" & Act == "tomate"  ~ 0,
-    Reg == "r_araucania" & Act == "trebol"  ~ 0,
-    Reg == "r_araucania" & Act == "trigo"  ~ 0,
-    Reg == "r_araucania" & Act == "zanahoria"  ~ 0,
+    # Región del Ñuble (Se utiliza información disponible de la parte norte de la región del Bio Bio. En caso de no existir información se recurre a zonas de más al sur de la región)
+    Reg == "r_nuble" & Act == "alfalfa"  ~ 53230.615/4485.6,
+    Reg == "r_nuble" & Act == "arroz"  ~ 43218.141/2337,
+    Reg == "r_nuble" & Act == "arveja_grano_seco"  ~ 8.001/1.8,
+    Reg == "r_nuble" & Act == "arveja_verde"  ~ 822.465/185.7,
+    Reg == "r_nuble" & Act == "avellano_europeo"  ~ 6.278/0.7,
+    Reg == "r_nuble" & Act == "avena"  ~ 807.312/336.1,
+    Reg == "r_nuble" & Act == "ballica"  ~ 53230.615/4485.6,
+    Reg == "r_nuble" & Act == "castaño"  ~ 93.592/8.9,
+    Reg == "r_nuble" & Act == "cebada"  ~ 849.889/779,
+    Reg == "r_nuble" & Act == "cebolla"  ~ 214.691/28.5,
+    Reg == "r_nuble" & Act == "cerezo"  ~ 885.189/163.5,
+    Reg == "r_nuble" & Act == "choclo"  ~ 5381.188/576.7,
+    Reg == "r_nuble" & Act == "esparrago"  ~ 2686.342/484.2,
+    Reg == "r_nuble" & Act == "festuca"  ~ 53230.615/4485.6,
+    Reg == "r_nuble" & Act == "kiwi"  ~ 845.345/86.8,
+    Reg == "r_nuble" & Act == "lechuga"  ~ 60.075/13.7,
+    Reg == "r_nuble" & Act == "lenteja"  ~ 22.042/4.2,
+    Reg == "r_nuble" & Act == "maiz"  ~ 2828.050/359.3,
+    Reg == "r_nuble" & Act == "manzana"  ~ 2527.014/299.8,
+    Reg == "r_nuble" & Act == "nogal"  ~ 98.289/18.3,
+    Reg == "r_nuble" & Act == "olivo"  ~ 22.390/22.8,
+    Reg == "r_nuble" & Act == "papa"  ~ 2286.629/272.9,
+    Reg == "r_nuble" & Act == "poroto"  ~ 15588.014/1861.7,
+    Reg == "r_nuble" & Act == "poroto_verde"  ~ 906.275/152.7,
+    Reg == "r_nuble" & Act == "remolacha"  ~ 53647.184/4616.4,
+    Reg == "r_nuble" & Act == "tomate"  ~ 1572.367/178.8,
+    Reg == "r_nuble" & Act == "trebol"  ~ 53230.615/4485.6,
+    Reg == "r_nuble" & Act == "trigo"  ~ 36095.609/7447,
+    Reg == "r_nuble" & Act == "zanahoria"  ~ 924.253/150.8,
+    Reg == "r_nuble" & Act == "zapallo"  ~ 6.130/11.5,
+    # Región del BioBio (ok)
+    Reg == "r_biobio" & Act == "alfalfa"  ~ 53230.615/4485.6,
+    Reg == "r_biobio" & Act == "arveja_grano_seco"  ~ 8.001/1.8,
+    Reg == "r_biobio" & Act == "arveja_verde"  ~ 305.991/82.3,
+    Reg == "r_biobio" & Act == "avellano_europeo"  ~ 6.278/0.7,
+    Reg == "r_biobio" & Act == "avena"  ~ 486.041/445.5,
+    Reg == "r_biobio" & Act == "ballica"  ~ 53230.615/4485.6,
+    Reg == "r_biobio" & Act == "castaño"  ~ 524.628/58.5,
+    Reg == "r_biobio" & Act == "cebolla"  ~ 214.691/28.5,
+    Reg == "r_biobio" & Act == "cerezo"  ~ 2186.870/490,
+    Reg == "r_biobio" & Act == "choclo"  ~ 758.128/93.4,
+    Reg == "r_biobio" & Act == "esparrago"  ~ 211.698/473.9,
+    Reg == "r_biobio" & Act == "festuca"  ~ 53230.615/4485.6,
+    Reg == "r_biobio" & Act == "lechuga"  ~ 60.075/13.7,
+    Reg == "r_biobio" & Act == "lenteja"  ~ 22.042/4.2,
+    Reg == "r_biobio" & Act == "maiz"  ~ 2828.050/359.3,
+    Reg == "r_biobio" & Act == "manzana"  ~ 651.147/92.1,
+    Reg == "r_biobio" & Act == "nogal"  ~ 98.289/18.3,
+    Reg == "r_biobio" & Act == "papa"  ~ 14489/2013.2,
+    Reg == "r_biobio" & Act == "poroto"  ~ 7361.102/1067.6,
+    Reg == "r_biobio" & Act == "remolacha"  ~ 31895.686/3212.7,
+    Reg == "r_biobio" & Act == "tomate"  ~ 1572.367/178.8,
+    Reg == "r_biobio" & Act == "trebol"  ~ 53230.615/4485.6,
+    Reg == "r_biobio" & Act == "trigo"  ~ 14365.250/4274,
+    Reg == "r_biobio" & Act == "uva_de_mesa"  ~ 16.201/5.6,
+    Reg == "r_biobio" & Act == "zanahoria"  ~ 924.253/150.8,
+    # Región de la Araucanía (Para lenteja se asume cir de poroto y alfalfa, ballica y trebol cir de forrajeras)
+    Reg == "r_araucania" & Act == "acelga"  ~ 0.277/1.90,
+    Reg == "r_araucania" & Act == "alfalfa"  ~ 61588.824/3689.50,
+    Reg == "r_araucania" & Act == "arveja_grano_seco"  ~ 24.964/4,
+    Reg == "r_araucania" & Act == "arveja_verde"  ~ 1193.696/233.6,
+    Reg == "r_araucania" & Act == "avellano_europeo"  ~ 23.946/2, 
+    Reg == "r_araucania" & Act == "avena"  ~ 1534.091/505.80,
+    Reg == "r_araucania" & Act == "ballica"  ~ 61588.824/3689.50,
+    Reg == "r_araucania" & Act == "castaño"  ~ 83.811/7,
+    Reg == "r_araucania" & Act == "cebada"  ~ 738.839/243.6,
+    Reg == "r_araucania" & Act == "cerezo"  ~ 9.629/1.9,
+    Reg == "r_araucania" & Act == "choclo"  ~ 384.820/36.5,
+    Reg == "r_araucania" & Act == "cilantro"  ~ 12.303/6.9,
+    Reg == "r_araucania" & Act == "haba"  ~ 59.080/21.10,
+    Reg == "r_araucania" & Act == "lechuga"  ~ 55.163/9.20,
+    Reg == "r_araucania" & Act == "lenteja"  ~ 301.419/31.30,
+    Reg == "r_araucania" & Act == "maiz"  ~ 58.811/5.6,
+    Reg == "r_araucania" & Act == "manzana"  ~ 1533.848/223.3,
+    Reg == "r_araucania" & Act == "nogal"  ~ 17.251/1.80,
+    Reg == "r_araucania" & Act == "papa"  ~ 2613.106/374.80,
+    Reg == "r_araucania" & Act == "poroto"  ~ 301.419/31.30,
+    Reg == "r_araucania" & Act == "poroto_verde"  ~ 233.005/34.10,
+    Reg == "r_araucania" & Act == "remolacha"  ~ 4003.929/483.8,
+    Reg == "r_araucania" & Act == "tomate"  ~ 60.440/8,
+    Reg == "r_araucania" & Act == "trebol"  ~ 61588.824/3689.50,
+    Reg == "r_araucania" & Act == "trigo"  ~ 6562.471/1150.10,
+    Reg == "r_araucania" & Act == "zanahoria"  ~ 364.682/48.80,
     # Región de los Ríos (Falta por cambiar completo)
-    Reg == "r_los_rios" & Act == "alfalfa"  ~ 0,
-    Reg == "r_los_rios" & Act == "arveja_grano_seco"  ~ 0,
-    Reg == "r_los_rios" & Act == "arveja_verde"  ~ 0,
-    Reg == "r_los_rios" & Act == "avena"  ~ 0,
-    Reg == "r_los_rios" & Act == "ballica"  ~ 0,
-    Reg == "r_los_rios" & Act == "castaño"  ~ 0,
-    Reg == "r_los_rios" & Act == "cebada"  ~ 0,
-    Reg == "r_los_rios" & Act == "cerezo"  ~ 0,
-    Reg == "r_los_rios" & Act == "maiz"  ~ 0,
-    Reg == "r_los_rios" & Act == "manzana"  ~ 0,
-    Reg == "r_los_rios" & Act == "papa"  ~ 0,
-    Reg == "r_los_rios" & Act == "trebol"  ~ 0,
-    Reg == "r_los_rios" & Act == "trigo"  ~ 0,
+    Reg == "r_los_rios" & Act == "alfalfa"  ~ 1165.034/220.4,
+    Reg == "r_los_rios" & Act == "arveja_grano_seco"  ~ 0.175/0.1,
+    Reg == "r_los_rios" & Act == "arveja_verde"  ~ 1.904/1.5,
+    Reg == "r_los_rios" & Act == "avena"  ~ 1534.091/505.80, # Información usada de Bio Bio
+    Reg == "r_los_rios" & Act == "ballica"  ~ 1165.034/220.4,
+    Reg == "r_los_rios" & Act == "castaño"  ~ 0.341/0.9,
+    Reg == "r_los_rios" & Act == "cebada"  ~ 738.839/243.6, # Información usada de Bio Bio
+    Reg == "r_los_rios" & Act == "cerezo"  ~ 6.683/5.3,
+    Reg == "r_los_rios" & Act == "maiz"  ~ 58.811/5.6, # Información usada de Bio Bio
+    Reg == "r_los_rios" & Act == "manzana"  ~ 181.155/95.9,
+    Reg == "r_los_rios" & Act == "papa"  ~ 1.445/0.8,
+    Reg == "r_los_rios" & Act == "trebol"  ~ 1165.034/220.4,
+    Reg == "r_los_rios" & Act == "trigo"  ~ 0.138/0.4,
     # Región de los Lagos (Falta por cambiar completo)
-    Reg == "r_los_lagos" & Act == "ajo"  ~ 0,
-    Reg == "r_los_lagos" & Act == "avellano_europeo"  ~ 0,
-    Reg == "r_los_lagos" & Act == "avena"  ~ 0,
-    Reg == "r_los_lagos" & Act == "ballica"  ~ 0,
-    Reg == "r_los_lagos" & Act == "cerezo"  ~ 0,
-    Reg == "r_los_lagos" & Act == "maiz"  ~ 0,
-    Reg == "r_los_lagos" & Act == "manzana"  ~ 0,
-    Reg == "r_los_lagos" & Act == "papa"  ~ 0,
-    Reg == "r_los_lagos" & Act == "trigo"  ~ 0,
+    Reg == "r_los_lagos" & Act == "ajo"  ~ 0.062/0.1,
+    Reg == "r_los_lagos" & Act == "avellano_europeo"  ~ 20.544/4.7,
+    Reg == "r_los_lagos" & Act == "avena"  ~ 1534.091/505.80, # Información usada de Bio Bio
+    Reg == "r_los_lagos" & Act == "ballica"  ~ 7.980/2.8,
+    Reg == "r_los_lagos" & Act == "cerezo"  ~ 5.037/4.9,
+    Reg == "r_los_lagos" & Act == "maiz"  ~ 58.811/5.6, # Información usada de Bio Bio
+    Reg == "r_los_lagos" & Act == "manzana"  ~ 7.130/4.6,
+    Reg == "r_los_lagos" & Act == "papa"  ~ 1.481/1,
+    Reg == "r_los_lagos" & Act == "trigo"  ~ 0.710/1.1,
     TRUE ~ CIR
   )) |> 
   mutate(CIR = case_when(
@@ -866,9 +873,13 @@ summary(data_raw_04)
 
 # Es necesario revisar costos totales de hortalizas tales como tomate, pepino, ajo y otros!!!!!
 
-data_raw_04 |> 
-  filter(Reg == "r_los_lagos") |> 
-  group_by(Act) |> 
-  summarise(prom_cir = mean(CIR, na.rm = T)) |> 
-  print(n = 40)
+
+write_xlsx(data_raw_04, "data_raw/db_forgams.xlsx")
+
+data_raw_04 |>
+  group_by(Reg, Agg) |> 
+  summarise(total_reg_area = sum(Area)) |> 
+  ggplot(aes(fct_reorder(Reg, total_reg_area), total_reg_area))+
+    geom_col(aes(fill= Agg))
+
 
