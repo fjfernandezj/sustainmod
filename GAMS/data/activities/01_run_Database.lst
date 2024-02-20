@@ -1,0 +1,146 @@
+GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 02/20/24 16:21:22 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+         Chile Megasequia
+       
+         Name      :   01_run_Database
+         Purpose   :   define model database
+         Author    :   Fco. Fernandez
+         Date      :   20.02.24
+         Since     :   febrero 2024
+         CalledBy  :
+       
+         Notes     :   Import excel data into gdx
+                       Build model database
+       
+  16  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+  18  * Mode database to generate GDX files with base data
+  19   
+  22   
+  23  *-------------------------------------------------------------------------------
+  24  *
+  25  *   Common sets and parameters
+  26  *
+  27  *-------------------------------------------------------------------------------
+  28   
+  29  set
+  30     reg                'regions and regional aggregates'
+  31     prov               'province'
+  32     comm               'communes'
+  33     act                'activities'
+  34     agg                'crop aggregates'
+  35     sys                'production system'
+  36     tech               'irrigation technologies'
+  37     var                'variables'             /area,yld,prd/
+  38     comex              'import export'
+  39     map_agg            'mapping aggregates-activities'
+  40     map_reg_comm       'mapping regions-communes'
+  41     map_prov_comm      'mapping provinces-communes'
+  42     map_reg_prov_comm  'mapping regions-provinces-communes'
+  43     map_sys_tech       'mapping system-irrigationtechnologies'
+  44     yrs                'years 1995-2012'
+  45   
+  46  ;
+  47   
+  48  parameter
+  49     p_cropData_censo     'crop management data commune level'
+  50  *   p_cropDataPr          'crop management data province level'
+  51  *   p_lvstckData          'Livestock management data'
+  52     p_supplyData_2010      'supply data 2010'
+  53  *   p_climChange          'impacts of climate change on yields and Cir. Two Scenarios A240-B240'
+  54  *   p_climchangePr        'impacts of climate change on yields and Cir (Province leve). Two Scenarios A240-B240'
+  55  *   p_comexData           'Export (+) / Imports (-), int_prices (US$/t), local currenct price (clpPrice)Average 1997-2007,'
+  56     p_marketData          'market data'
+  57     p_demandData          'Demand data'
+  58     convf                 'conversion factor actvity - product'
+  59  ;
+  60   
+  62  *-------------------------------------------------------------------------------
+  63  *
+  64  *   Import raw data (from XLS to GDX)
+  65  *
+  66  *-------------------------------------------------------------------------------
+  67   
+  68  *   ---- auxiliary parameters
+  69   
+  70  parameter
+  71     t_cropData_censo   'crop data'
+  72  *   t_costShare         'input use as % of total Cost'
+  73  *   t_intPrice          'International Prices (average1997-2007)'
+  74     t_outputPriceReal      'Producer Prices 2010-2020(real Dic 2008)($)'
+  75     t_outputPriceReal_2010 'Producer Prices 2010(real Dic 2008)($)'
+  76     t_outputPriceReal_2011 'Producer Prices 2011(real Dic 2008)($)'
+  77     t_outputPriceReal_2012 'Producer Prices 2012(real Dic 2008)($)'
+  78     t_outputPriceReal_2013 'Producer Prices 2013(real Dic 2008)($)'
+  79     t_outputPriceReal_2014 'Producer Prices 2014(real Dic 2008)($)'
+  80     t_outputPriceReal_2015 'Producer Prices 2015(real Dic 2008)($)'
+  81     t_outputPriceReal_2016 'Producer Prices 2016(real Dic 2008)($)'
+  82     t_outputPriceReal_2017 'Producer Prices 2017(real Dic 2008)($)'
+  83     t_outputPriceReal_2018 'Producer Prices 2018(real Dic 2008)($)'
+  84     t_outputPriceReal_2019 'Producer Prices 2019(real Dic 2008)($)'
+  85     t_outputPriceReal_2020 'Producer Prices 2020(real Dic 2008)($)'
+  86   
+  87  *   t_outputPriceNom    'Producer Prices 1997-2007(Nominal)($)'
+  88  *   t_ConsPriceNom      'Consumer Prices (Nominal)($)'
+  89  *   t_COnsPriceReal     'Consumer Prices (Real)($)'
+  90     t_selasticities     'supply elasticities'
+  91     t_delasticities     'demand elasticities'
+  92     t_elasticities      'supply and demand elasticities'
+  93  *   t_CIR               'Crop Irrigation Requirements mm/h (by AGrimied)'
+  94     t_ttlCost           'Total Cost $/h (Dic 2007)'
+  95  *   t_Provcir            'CIR at Province level (average of commune cir)'
+  96   
+  97  ;
+  98   
+  99  *   ---- import sets (from xls to gdx)
+ 101   
+GDXIN   C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
+--- LOAD  act = 1:act
+--- LOAD  agg = 2:agg
+--- LOAD  map_agg = 3:map_agg
+--- LOAD  prov = 4:prov
+--- LOAD  reg = 5:reg
+--- LOAD  sys = 6:sys
+--- LOAD  comm = 7:comm
+--- LOAD  map_reg_comm = 8:map_reg_comm
+--- LOAD  map_prov_comm = 9:map_prov_comm
+--- LOAD  map_reg_prov_comm = 10:map_reg_prov_comm
+--- LOAD  tech = 11:tech
+--- LOAD  map_sys_tech = 12:map_sys_tech
+ 105   
+ 106  *   ---- import data (from xls to gdx)
+ 107  * -- Area, yield, cost, CIR
+ 109   
+EXIT C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
+GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 02/20/24 16:21:22 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
+     2      100 CALL           1     103  gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\sets\setsChile_censo.gdx se=2 index=indexSet!A3" ge 1997-2007,' 
+     3      102 GDXIN          1     105  C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
+     4      108 CALL           1     111  gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\activities\production.gdx se=2 index=indexdat!A3" e 1997-2007,' 
+     5      110 EXIT           1     113  C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
+
+
+COMPILATION TIME     =        3.390 SECONDS      3 MB  45.7.0 64fbf3ce WEX-WEI
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 MB  45.7.0 64fbf3ce WEX-WEI
+
+
+USER: Francisco Fernandez, Single User License       G230703|0002AO-WIN
+      Universidad San Sebastian,                                DC16629
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
+Output     C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.lst

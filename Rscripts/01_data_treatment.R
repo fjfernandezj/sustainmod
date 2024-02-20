@@ -16,7 +16,7 @@
 ##---
 
 #install packages
-install.packages("writexl")
+#install.packages("writexl")
 
 # Cargar paquetes Seccion 1 ---------------------------------------------------------
 # library
@@ -866,15 +866,41 @@ data_raw_04 <- data_raw_03 |>
   mutate(CIR = case_when(
     Sys == "secano" ~ 0,
     TRUE ~ CIR
+  )) |> 
+  mutate(Act = case_when(
+    Agg == "forrajeras" & Act == "avena" ~ "avena_f",
+    Agg == "cereales" & Act == "avena" ~ "avena_c",
+    Agg == "forrajeras" & Act == "cebada" ~ "cebada_f",
+    Agg == "cereales" & Act == "cebada" ~ "cebada_c",
+    Agg == "forrajeras" & Act == "maiz" ~ "maiz_f",
+    Agg == "cereales" & Act == "maiz" ~ "maiz_c",
+    Agg == "hortalizas" & Act == "poroto" ~ "poroto_h",
+    Agg == "leguminosas_y_tuberculos" & Act == "poroto" ~ "poroto_l",
+    Agg == "hortalizas" & Act == "tomate" ~ "tomate_h",
+    Agg == "industriales" & Act == "tomate" ~ "tomate_i",
+    TRUE ~ Act
+  )) 
+
+data_raw_05 <- data_raw_04 |> 
+  group_by(Reg, Prov, Comm, Agg, Act, Sys, tech) |> 
+  summarise(area = sum(Area, na.rm = TRUE),
+            yld = mean(Yld, na.rm = TRUE),
+            lab = mean(Lab, na.rm = TRUE),
+            ttl_Cost = mean(Ttl_Cost, na.rm = TRUE),
+            cir = mean(CIR, na.rm = TRUE)) |> 
+  mutate(Sys = case_when(
+    Sys == "riego" ~ "irr",
+    Sys == "secano" ~ "dry",
   ))
 
 
-summary(data_raw_04)
+summary(data_raw_05)
 
 # Es necesario revisar costos totales de hortalizas tales como tomate, pepino, ajo y otros!!!!!
 
 
-write_xlsx(data_raw_04, "data_raw/db_forgams.xlsx")
+write_xlsx(data_raw_05, "data_raw/db_forgams.xlsx")
+
 
 data_raw_04 |>
   group_by(Reg, Agg) |> 
@@ -882,4 +908,51 @@ data_raw_04 |>
   ggplot(aes(fct_reorder(Reg, total_reg_area), total_reg_area))+
     geom_col(aes(fill= Agg))
 
+Activities <- data_raw_04 |>
+  group_by(Agg, Act) |> 
+  count()
+  
+write_xlsx(Activities, "data_raw/activities.xlsx")
+
+Regions <- data_raw_04 |>
+  group_by(Reg) |> 
+  count()
+
+write_xlsx(Regions, "data_raw/regions.xlsx")
+
+Provinces <- data_raw_04 |>
+  group_by(Prov) |> 
+  count() 
+
+write_xlsx(Provinces, "data_raw/provinces.xlsx")
+
+map_reg_comm <- data_raw_04 |> 
+  group_by(Reg, Comm) |> 
+  count()
+
+write_xlsx(map_reg_comm, "data_raw/map_reg_comm.xlsx")
+
+map_prov_comm <- data_raw_04 |> 
+  group_by(Prov, Comm) |> 
+  count() 
+
+write_xlsx(map_prov_comm, "data_raw/map_prov_comm.xlsx")
+
+map_reg_prov_comm <- data_raw_04 |> 
+  group_by(Reg, Prov, Comm) |> 
+  count() 
+
+write_xlsx(map_reg_prov_comm, "data_raw/map_reg_prov_comm.xlsx")
+
+tech <- data_raw_04 |> 
+  group_by(tech) |> 
+  count() 
+
+write_xlsx(tech, "data_raw/tech.xlsx")
+
+map_sys_tech <- data_raw_04 |> 
+  group_by(Sys, tech) |> 
+  count() 
+
+write_xlsx(map_sys_tech, "data_raw/map_sys_tech.xlsx")
 

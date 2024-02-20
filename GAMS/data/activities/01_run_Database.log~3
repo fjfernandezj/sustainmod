@@ -1,0 +1,47 @@
+
+--- Job 01_run_Database.gms Start 02/20/24 15:44:26 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\45\gmsprmNT.txt
+    C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
+--- GAMS Parameters defined
+    Input C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
+    PageSize 0
+    ScrDir C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\225a\
+    SysDir C:\GAMS\45\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: Francisco Fernandez, Single User License       G230703|0002AO-WIN
+          Universidad San Sebastian,                                DC16629
+          C:\Users\franj\OneDrive\Documentos\GAMS\gamslice.txt
+          francisco.fernandez@uss.cl                                       
+          The maintenance period of the license will expire on Jul 27, 2024
+Processor information: 1 socket(s), 12 core(s), and 20 thread(s) available
+GAMS 45.7.0   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- 01_run_Database.gms(103) 3 Mb
+--- call gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\sets\setsChile_censo.gdx se=2 index=indexSet!A3
+
+GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
+Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
+Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
+Substituting Index
+Total time = 2031 Ms
+--- 01_run_Database.gms(105) 3 Mb
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
+--- 01_run_Database.gms(111) 3 Mb
+--- call gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\activities\production.gdx se=2 index=indexdat!A3
+
+GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
+Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
+Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
+Substituting Index
+**** Bad data range for symbol t_cropData_censo : LB_FONDECYT ()
+Total time = 1953 Ms
+--- 01_run_Database.gms(113) 3 Mb
+--- Starting execution - empty program
+*** Status: Normal completion
+--- Job 01_run_Database.gms Stop 02/20/24 15:44:31 elapsed 0:00:04.104
