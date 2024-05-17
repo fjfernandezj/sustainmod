@@ -110,10 +110,11 @@ $gdxin
 * -- Area, yield, cost, CIR
 $call "gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\activities\production.gdx se=2 index=indexdat!A3"
 
-$exit
 
 * -- Precios (Fuente: ODEPA - FAOSTAT)
-$call "gdxxrw.exe ..\data\markets\ProducerPrices_megasequia.xlsx o=..\data\markets\prdPricesReal_megasequia.gdx se=2 index=indexDat!A3"
+$call "gdxxrw.exe ..\markets\ProducerPrices_fondecyt.xlsx o=..\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3"
+
+$exit
 
 * -- Elasticidades
 $call "gdxxrw.exe ..\data\markets\Elasticities_megasequia.xlsx o=..\data\markets\elasticities_megasequia.gdx se=2 index=index!A3"

@@ -1,5 +1,5 @@
 
---- Job 01_run_Database.gms Start 02/20/24 16:21:22 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+--- Job 01_run_Database.gms Start 05/09/24 17:46:44 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\45\gmsprmNT.txt
     C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
@@ -28,7 +28,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 Substituting Index
-Total time = 1625 Ms
+Total time = 1296 Ms
 --- 01_run_Database.gms(105) 3 Mb
 --- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 --- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
@@ -39,8 +39,16 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
 Substituting Index
-Total time = 1641 Ms
---- 01_run_Database.gms(113) 3 Mb
+Total time = 2297 Ms
+--- 01_run_Database.gms(115) 3 Mb
+--- call gdxxrw.exe ..\markets\ProducerPrices_fondecyt.xlsx o=..\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3
+
+GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
+Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.xlsx
+Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
+Substituting Index
+Total time = 1969 Ms
+--- 01_run_Database.gms(117) 3 Mb
 --- Starting execution - empty program
 *** Status: Normal completion
---- Job 01_run_Database.gms Stop 02/20/24 16:21:25 elapsed 0:00:03.400
+--- Job 01_run_Database.gms Stop 05/09/24 17:46:50 elapsed 0:00:05.766

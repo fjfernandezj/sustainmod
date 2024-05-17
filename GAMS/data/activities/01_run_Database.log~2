@@ -1,5 +1,5 @@
 
---- Job 01_run_Database.gms Start 02/20/24 15:48:53 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+--- Job 01_run_Database.gms Start 05/09/24 17:44:28 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\45\gmsprmNT.txt
     C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
@@ -28,7 +28,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 Substituting Index
-Total time = 2032 Ms
+Total time = 1297 Ms
 --- 01_run_Database.gms(105) 3 Mb
 --- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 --- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
@@ -39,22 +39,14 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
 Substituting Index
-**** There were at least 10 duplicate entries for symbol t_cropData_censo
- 1: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_movil,Area
- 2: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_movil,Yld
- 3: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_movil,Lab
- 4: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_movil,Ttl_Cost
- 5: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_movil,CIR
- 6: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_por_cobertura_total,Area
- 7: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_por_cobertura_total,Yld
- 8: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_por_cobertura_total,Lab
- 9: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_por_cobertura_total,Ttl_Cost
-10: r_araucania,p_cautin,c_temuco,leguminosas_y_tuberculos,poroto,irr,aspersion_por_cobertura_total,CIR
-Remaining duplicate entries skipped (use trace>=4 to see all records processed including all duplicates)
-Output gdx file deleted: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
 Total time = 2297 Ms
-The option "MaxDupeErrors = <integer>" can be used to allow for some duplicate records
---- 01_run_Database.gms(113) 3 Mb
+--- 01_run_Database.gms(115) 3 Mb
+--- call gdxxrw.exe ..\data\markets\ProducerPrices_fondecyt.xlsx o=..\data\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3
+
+GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
+**** Input file not found = C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\data\markets\ProducerPrices_fondecyt.xlsx
+Total time = 453 Ms
+--- 01_run_Database.gms(117) 3 Mb
 --- Starting execution - empty program
 *** Status: Normal completion
---- Job 01_run_Database.gms Stop 02/20/24 15:48:57 elapsed 0:00:04.462
+--- Job 01_run_Database.gms Stop 05/09/24 17:44:32 elapsed 0:00:04.224

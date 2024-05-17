@@ -1,10 +1,10 @@
-GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 02/20/24 16:21:22 Page 1
+GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 05/09/24 17:46:44 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
    1  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
-         Chile Megasequia
+         Fondecyt Iniciación - Modelo Oferta 
        
          Name      :   01_run_Database
          Purpose   :   define model database
@@ -114,8 +114,11 @@ GDXIN   C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\sets
  106  *   ---- import data (from xls to gdx)
  107  * -- Area, yield, cost, CIR
  109   
+ 110   
+ 111  * -- Precios (Fuente: ODEPA - FAOSTAT)
+ 113   
 EXIT C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 02/20/24 16:21:22 Page 2
+GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 05/09/24 17:46:44 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
@@ -126,10 +129,11 @@ Include File Summary
      2      100 CALL           1     103  gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\sets\setsChile_censo.gdx se=2 index=indexSet!A3" ge 1997-2007,' 
      3      102 GDXIN          1     105  C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
      4      108 CALL           1     111  gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\activities\production.gdx se=2 index=indexdat!A3" e 1997-2007,' 
-     5      110 EXIT           1     113  C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
+     5      112 CALL           1     115  gdxxrw.exe ..\markets\ProducerPrices_fondecyt.xlsx o=..\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3"  
+     6      114 EXIT           1     117  C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
 
 
-COMPILATION TIME     =        3.390 SECONDS      3 MB  45.7.0 64fbf3ce WEX-WEI
+COMPILATION TIME     =        5.766 SECONDS      3 MB  45.7.0 64fbf3ce WEX-WEI
 
 
 EXECUTION TIME       =        0.000 SECONDS      3 MB  45.7.0 64fbf3ce WEX-WEI
