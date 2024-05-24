@@ -1,5 +1,5 @@
 
---- Job 01_run_Database.gms Start 05/09/24 17:46:44 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+--- Job 01_run_Database.gms Start 05/24/24 09:27:07 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\45\gmsprmNT.txt
     C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
@@ -28,7 +28,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 Substituting Index
-Total time = 1296 Ms
+Total time = 1266 Ms
 --- 01_run_Database.gms(105) 3 Mb
 --- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 --- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
@@ -39,7 +39,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
 Substituting Index
-Total time = 2297 Ms
+Total time = 1438 Ms
 --- 01_run_Database.gms(115) 3 Mb
 --- call gdxxrw.exe ..\markets\ProducerPrices_fondecyt.xlsx o=..\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3
 
@@ -47,8 +47,32 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
 Substituting Index
-Total time = 1969 Ms
---- 01_run_Database.gms(117) 3 Mb
---- Starting execution - empty program
+Total time = 922 Ms
+--- 01_run_Database.gms(119) 3 Mb
+--- call gdxxrw.exe ..\markets\Elasticities.xlsx o=..\markets\Elasticities.gdx se=2 index=index!A3
+
+GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
+Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.xlsx
+Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+Substituting Index
+Total time = 969 Ms
+--- 01_run_Database.gms(123) 3 Mb
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
+--- 01_run_Database.gms(127) 6 Mb
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
+--- 01_run_Database.gms(131) 6 Mb
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- 01_run_Database.gms(135) 6 Mb
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- 01_run_Database.gms(139) 6 Mb
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- 01_run_Database.gms(146) 6 Mb
+--- Starting execution: elapsed 0:00:04.818
+--- 01_run_Database.gms(141) 7 Mb
 *** Status: Normal completion
---- Job 01_run_Database.gms Stop 05/09/24 17:46:50 elapsed 0:00:05.766
+--- Job 01_run_Database.gms Stop 05/24/24 09:27:12 elapsed 0:00:04.882

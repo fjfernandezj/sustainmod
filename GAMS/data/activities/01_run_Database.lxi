@@ -1,2 +1,8 @@
 B 3 C o m p i l a t i o n
-B 123 Include File Summary
+B 146 Include File Summary
+B 168 E x e c u t i o n
+I 168 t_cropData_censo
+I 42843 t_outputPriceReal
+I 42913 t_selasticities
+I 42918 t_delasticities
+I 42923 t_elasticities

@@ -145,26 +145,6 @@ display t_cropData_censo, t_outputPriceReal, t_selasticities, t_delasticities, t
 
 $exit
 
-
-
-
-
-
-
-
-$gdxin ..\data\markets\elasticities_megasequia.gdx
-$load  t_delasticities
-$gdxin
-
-$gdxin ..\data\markets\elasticities_megasequia.gdx
-$load  t_elasticities
-$gdxin
-
-
-
-display  t_outputPriceReal_2010, t_outputPriceReal_2011;
-
-
 *-------------------------------------------------------------------------------
 *
 *   Define model database 2010
