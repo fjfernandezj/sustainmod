@@ -1,5 +1,5 @@
 
---- Job 01_run_Database.gms Start 05/24/24 09:25:44 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+--- Job 01_run_Database.gms Start 07/05/24 10:53:06 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\45\gmsprmNT.txt
     C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
@@ -28,7 +28,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 Substituting Index
-Total time = 1281 Ms
+Total time = 844 Ms
 --- 01_run_Database.gms(105) 3 Mb
 --- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
 --- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\sets\setsChile_censo.gdx
@@ -39,7 +39,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\DataBase_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
 Substituting Index
-Total time = 1437 Ms
+Total time = 1047 Ms
 --- 01_run_Database.gms(115) 3 Mb
 --- call gdxxrw.exe ..\markets\ProducerPrices_fondecyt.xlsx o=..\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3
 
@@ -47,7 +47,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
 Substituting Index
-Total time = 985 Ms
+Total time = 656 Ms
 --- 01_run_Database.gms(119) 3 Mb
 --- call gdxxrw.exe ..\markets\Elasticities.xlsx o=..\markets\Elasticities.gdx se=2 index=index!A3
 
@@ -55,7 +55,7 @@ GDXXRW           45.7.0 64fbf3ce Jan 18, 2024          WEI x86 64bit/MS Window
 Input file : C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.xlsx
 Output file: C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
 Substituting Index
-Total time = 1016 Ms
+Total time = 703 Ms
 --- 01_run_Database.gms(123) 3 Mb
 --- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
 --- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\production.gdx
@@ -63,51 +63,16 @@ Total time = 1016 Ms
 --- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
 --- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\ProducerPrices_fondecyt.gdx
 --- 01_run_Database.gms(131) 6 Mb
-*** GDXIN failed C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\data\markets\Elasticities.gdx
-*** Msg: No such file or directory
---- 01_run_Database.gms(131) 6 Mb 1 Error
-*** Error 510 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    Unable to open gdx file for $GDXIN
---- 01_run_Database.gms(132) 6 Mb 2 Errors
-*** Error 502 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    GDXIN  file not open - ignore rest of line
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
 --- 01_run_Database.gms(135) 6 Mb
-*** GDXIN failed C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\data\markets\Elasticities.gdx
-*** Msg: No such file or directory
---- 01_run_Database.gms(135) 6 Mb 3 Errors
-*** Error 510 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    Unable to open gdx file for $GDXIN
---- 01_run_Database.gms(136) 6 Mb 4 Errors
-*** Error 502 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    GDXIN  file not open - ignore rest of line
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
 --- 01_run_Database.gms(139) 6 Mb
-*** GDXIN failed C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\data\markets\Elasticities.gdx
-*** Msg: No such file or directory
---- 01_run_Database.gms(139) 6 Mb 5 Errors
-*** Error 510 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    Unable to open gdx file for $GDXIN
---- 01_run_Database.gms(140) 6 Mb 6 Errors
-*** Error 502 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    GDXIN  file not open - ignore rest of line
---- 01_run_Database.gms(144) 6 Mb 9 Errors
-*** Error 141 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    Symbol declared but no values have been assigned. Check for missing
-       data definition, assignment, data loading or implicit assignment
-       via a solve statement. Suppress with $onImplicitAssign.
-       A wild shot: You may have spurious commas in the explanatory
-       text of a declaration. Check symbol reference list.
-*** Error 141 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    Symbol declared but no values have been assigned. Check for missing
-       data definition, assignment, data loading or implicit assignment
-       via a solve statement. Suppress with $onImplicitAssign.
-       A wild shot: You may have spurious commas in the explanatory
-       text of a declaration. Check symbol reference list.
-*** Error 141 in C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\activities\01_run_Database.gms
-    Symbol declared but no values have been assigned. Check for missing
-       data definition, assignment, data loading or implicit assignment
-       via a solve statement. Suppress with $onImplicitAssign.
-       A wild shot: You may have spurious commas in the explanatory
-       text of a declaration. Check symbol reference list.
---- 01_run_Database.gms(146) 6 Mb 9 Errors
-*** Status: Compilation error(s)
---- Job 01_run_Database.gms Stop 05/24/24 09:25:49 elapsed 0:00:04.953
+--- GDXin=C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- GDX File ($gdxIn) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\markets\Elasticities.gdx
+--- 01_run_Database.gms(220) 6 Mb
+--- Starting execution: elapsed 0:00:03.472
+--- 01_run_Database.gms(215) 10 Mb
+*** Status: Normal completion
+--- Job 01_run_Database.gms Stop 07/05/24 10:53:10 elapsed 0:00:03.610
