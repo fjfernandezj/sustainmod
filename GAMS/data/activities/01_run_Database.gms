@@ -49,7 +49,7 @@ parameter
    p_cropData_2021     'crop management data commune level VIII Censo Nacional Agropecuario año agrícola 2020/2021'
 *   p_cropDataPr          'crop management data province level'
 *   p_lvstckData          'Livestock management data'
-   p_supplyData_2010      'supply data 2010'
+   p_supplyData_2021      'supply data 2021'
 *   p_climChange          'impacts of climate change on yields and Cir. Two Scenarios A240-B240'
 *   p_climchangePr        'impacts of climate change on yields and Cir (Province leve). Two Scenarios A240-B240'
 *   p_comexData           'Export (+) / Imports (-), int_prices (US$/t), local currenct price (clpPrice)Average 1997-2007,'
@@ -198,7 +198,7 @@ p_cropData_2021(reg, prov, comm, agg, act, 'total','tot', 'prd')= p_cropData_202
 * p_cropData_2021(reg, prov, comm, agg, act, 'a_total','tot_tech', 'prd')/p_cropData_2021(reg, prov, comm, agg, act, 'a_total','tot_tech', 'area');
 
 
-*-----------------Cost per yield 2010 ($/h) ($ Dic 2007)-----------------
+*-----------------Cost per yield 2021 ($/h) ($ Date?)-----------------
 *------------------Even if the commune doesnt grown the crop---------
 
 p_cropData_2021(reg, prov, comm, agg, act, 'irr','aspersion_movil','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','aspersion_movil','Ttl_Cost');
@@ -208,7 +208,7 @@ p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'carrete_de_riego','vcost')= t
 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'goteo_o_cinta','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'goteo_o_cinta','Ttl_Cost');
 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'hidroponico','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'hidroponico','Ttl_Cost');
 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'microaspersion_o_microjet','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'microaspersion_o_microjet','Ttl_Cost');
-p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'no_responde','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'no_responde','Ttl_Cost');
+*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'no_responde','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'no_responde','Ttl_Cost');
 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'otro_tradicional','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'otro_tradicional','Ttl_Cost');
 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'pivote_central_o_avance_frontal','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'pivote_central_o_avance_frontal','Ttl_Cost');
 p_cropData_2021(reg, prov, comm, agg, act, 'dry', 'sin_riego','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'dry', 'sin_riego','Ttl_Cost');
@@ -216,9 +216,143 @@ p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'surco','vcost')= t_cropData_c
 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'tendido','vcost')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'tendido','Ttl_Cost');
 
 
+*-----------------Revenue 2021 ($/h) ($ Date)------------------
+*parameter t_outputPriceReal 'average producer price 2007-2022 (real)';
+*t_outputPriceReal(act,'avge')$(sum(yrs,1$t_outputPriceReal(act,yrs)) gt 0)=sum(yrs,t_outputPriceReal(act,yrs))/sum(yrs,1$t_outputPriceReal(act,yrs)) ;
+
+*display t_outputPriceReal;
+
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_movil','srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_movil', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_movil', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_cobertura_total', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_por_cobertura_total', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_por_cobertura_total', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_tazas', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_por_tazas', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_por_tazas', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'carrete_de_riego', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'carrete_de_riego', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr','carrete_de_riego', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'goteo_o_cinta', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'goteo_o_cinta', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'goteo_o_cinta', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'hidroponico', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'hidroponico', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'hidroponico', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'microaspersion_o_microjet', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'microaspersion_o_microjet', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'microaspersion_o_microjet', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'otro_tradicional', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'otro_tradicional', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'otro_tradicional', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'pivote_central_o_avance_frontal', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'pivote_central_o_avance_frontal', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'pivote_central_o_avance_frontal', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'tendido', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'tendido', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'tendido', 'yld');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'surco', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'surco', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'surco', 'yld');
+
+p_cropData_2021(reg, prov, comm, agg, act, 'dry', 'sin_riego', 'srev')$p_cropData_2021(reg, prov, comm, agg, act, 'dry', 'sin_riego', 'yld')=
+        t_outputPriceReal(act,'Average')*p_cropData_2021(reg, prov, comm, agg, act, 'dry', 'sin_riego', 'yld');
+
+
+*----------------Gross Margin 2021 ($/h) ($ Date)----------------
+*------Comune---
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_movil','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_movil','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','aspersion_movil','vcost');
+
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_cobertura_total','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_cobertura_total','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','aspersion_por_cobertura_total','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_tazas','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_tazas','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','aspersion_por_tazas','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'carrete_de_riego','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'carrete_de_riego','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','carrete_de_riego','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'goteo_o_cinta','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'goteo_o_cinta','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','goteo_o_cinta','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'hidroponico','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'hidroponico','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','hidroponico','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'microaspersion_o_microjet','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'microaspersion_o_microjet','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','microaspersion_o_microjet','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'otro_tradicional','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'otro_tradicional','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','otro_tradicional','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'pivote_central_o_avance_frontal','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'pivote_central_o_avance_frontal','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','pivote_central_o_avance_frontal','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'tendido','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'tendido','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','tendido','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'surco','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'surco','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','surco','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'dry', 'sin_riego','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'dry', 'sin_riego','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'dry', 'sin_riego','vcost');
+        
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_movil','gmar') =
+        p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_movil','srev') - p_cropData_2021(reg, prov, comm, agg, act, 'irr','aspersion_movil','vcost');
+        
+
+*   ---- supply data: elasticities, production and producer prices ($ Data)--------
+p_supplyData_2021(act,'prd')  = sum((reg, prov,comm,agg,sys,tech),p_cropData_2021(reg, prov,comm,agg,act, sys,tech,'prd'));
+
+p_supplyData_2021(act,'spre')$p_supplyData_2021(act,'prd')= t_outputPriceReal(act,'Average');
+
+*--------------market Data 2021: Elasticities--------------*
+p_marketdata(act,'selast')= t_elasticities(act,'selas');
+
+*--------------labor demand: workers/h----------
+*--------Comune-----
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_movil','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','aspersion_movil','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_cobertura_total','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','aspersion_por_cobertura_total','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'aspersion_por_tazas','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','aspersion_por_tazas','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'carrete_de_riego','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','carrete_de_riego','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'goteo_o_cinta','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'goteo_o_cinta','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'hidroponico','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','hidroponico','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'microaspersion_o_microjet','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','microaspersion_o_microjet','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'otro_tradicional','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','otro_tradicional','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'pivote_central_o_avance_frontal','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','pivote_central_o_avance_frontal','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'tendido','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr','tendido','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'irr', 'surco','labor')= t_cropData_censo(reg, prov, comm, agg, act, 'irr', 'surco','Lab');
+p_cropData_2021(reg, prov, comm, agg, act,'dry', 'sin_riego','labor')= t_cropData_censo(reg, prov, comm, agg, act,'dry', 'sin_riego','Lab');
+
+*----------------Crop Irrigation requirements at the Base Line(th m3/h/yr)---------
+*------Comune level----
+p_cropData_2021(reg, prov, comm, agg, act,'irr', tech, 'cir')= t_cropData_censo(reg, prov, comm, agg, act, 'irr',tech,'CIR');
+
 display p_cropData_2021;
 
+
+
+*   ---- create gdx file with model data
+execute_unload '..\results\sustainmod.gdx' p_cropData_2021 p_marketdata p_supplyData_2021;
+execute 'gdxxrw.exe ..\results\sustainmod.gdx o=..\results\sustainmod.xlsx par=p_cropData_2021 rng=cropData2021!A1' ;
+execute 'gdxxrw.exe ..\results\sustainmod.gdx o=..\results\sustainmod.xlsx par=p_marketdata rng=marketData2021!A1' ;
+execute 'gdxxrw.exe ..\results\sustainmod.gdx o=..\results\sustainmod.xlsx par=p_supplyData_2021 rng=p_supplyData_2021!A1' ;
+
+
+
+
+
+
 $exit
+
+
+
+
+
+
+
+
+
 
 
 p_cropData_2010(reg, comm, act, sys, 'yld') = t_cropData_2010(comm, act, sys, 'yld');
