@@ -1,0 +1,120 @@
+GAMS 45.7.0  64fbf3ce Jan 18, 2024          WEX-WEI x86 64bit/MS Windows - 07/22/25 12:32:07 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+         Megasequia - CR2
+       
+         Name      :   02_pars_Chile_sustainmod.gms
+         Purpose   :   Core model parameters
+         Author    :   Francisco Fernandez
+         Date      :   16.09.21
+         Since     :   Sept 2021
+         CalledBy  :   04_load_baseDataChile_megasequia
+       
+         Notes     :   Declaration of core model parameters
+       
+  15  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+  16   
+  17  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+  18  *                         PARAMETERS DECLARATION                               *
+  19  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+  20   
+  21  parameter
+  22  * farmland availability commune level
+  23     iland_2021        "irrigable land (ha) commune 2021"
+  24     tland_2021        "total agricultural land (ha) commune 2021"
+  25     wland             "irrigated land in the reference period (ha) commune"
+  26   
+  27  *   ---- base year data commune------
+  28     yld_2021     "crop yield 2021 (tons/h)"
+  29   
+  30     x0_2021      "crop area (2021) in ha commune level"
+  31   
+  32     w0_2021     "water delivery (2021) in m3 commune level"
+  33   
+  34     ps0_2021      "producer price (CLP M$/t) - 2021"
+  35   
+  36     qs0_2021      "national Supply quantity (ton) - 2021"
+  37   
+  38     pd0          "consumer price (CLP M$/t)"
+  39     qd0          "national demand (ton)"
+  40   
+  41     selas_2021   'supply elasticity 2021'
+  42   
+  43     delas        'demand elasticity'
+  44   
+  45  *   DW_2010       'Gross Water Delivered 2010'
+  46  *   DW_2020       'Gross Water Delivered 2020'
+  47   
+  48   
+  49  *   ---- production costs by commune
+  50     vcos_2021    "average variable costs (CLP M$/ha) (labor cost not included) - 2021"
+  51   
+  52     sgm_2021     "standard gross margin (CLP $M/ha) - 2021"
+  53   
+  54     gm           "gross margin (CLP/ha) (trev-vcos-lcos)"
+  55     nm           "net margin (CLP/ha) (trev-vc)"
+  56     gva          "gros value added (CLP M$/ha) (trev-vcos)"
+  57     nva          "net value added (CLP M$/ha) (trev-vcos-kcos)"
+  58     marg         "crop economic data"
+  59     lab_2021     "labor demand per hectare 2021"
+  60   
+  61  * model data for baseline
+  62     p_cropData_2021(*,*,*,*,*,*,*,*) 'crop management data commune level 2021'
+  63     p_supplyData_2021(*,*)           'supply data 2021'
+  64     p_marketData(*,*)                'market data'
+  65   
+  66   
+  67  * crop water requirements and irrigation efficiency commune
+  68     nir          "net irrigation requirements"
+  69     fir_2021     "farm-gate (field) irrigation requirements 2021"
+  70     gir_2021     "gros irrigation requirements 2021"
+  71     Hd           "conveyance and distribution efficiency of the water network"
+  72     Ha           "water application efficiency"
+  73   
+  74  * water charges
+  75     wtariff      "area based water tariff (canon + derrama)"
+  76   
+  77  *   ---- cost function parameters commune 2021
+  78     alpha_2021       "marginal cost intercept"
+  79     beta_2021        "marginal cost slope (activity)"
+  80     gamma_2021       "marginal cost slope (crop or crop group)"
+  81     delta_2021       "marginal cost slope (irrigation technique)"
+  82     sigma_2021       "subarea deviation from cost frontier"
+  83     cpar_2021        "calibration parameters"
+  84   
+  85   
+  86  *~~~~~~~~~~~~~~~~~~~~~~~~ CALIBRATION PARAMETERS COMMUNE            ~~~~~~~~~~~~~~~~~~*
+  87  Parameter
+  88     eps1       "epsilon (activity)"
+  89     eps2       "epsilon (crop)"
+  90     eps3       "epsilon (total crop area)"
+  91     mu1        "dual values from calibration constraints (activity)"
+  92     mu2        "dual values from calibration constraints (group)"
+  93     mu3        "dual values from calibration constraints (total activity area)"
+  94     cvpar      "cost function parameters"
+  95     LambdaL    "land marginal value";
+  96   
+  97  Parameter
+  98    Margin      'marketing margin';
+  99   
+ 100   
+
+
+COMPILATION TIME     =        0.000 SECONDS      2 MB  45.7.0 64fbf3ce WEX-WEI
+
+
+EXECUTION TIME       =        0.000 SECONDS      2 MB  45.7.0 64fbf3ce WEX-WEI
+
+
+USER: Francisco Fernandez, Single User License       G230703|0002AO-WIN
+      Universidad San Sebastian,                                DC16629
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\02_pars_Chile_sustainmod.gms
+Output     C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\02_pars_Chile_sustainmod.lst

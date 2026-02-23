@@ -1,0 +1,18 @@
+--- Job 01_run_Database.gms Start 07/22/25 11:53:59 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+*** Unable to open input file (RC=2) C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\01_run_Database.gms
+*** SysMsg: No such file or directory
+--- Applying:
+    C:\GAMS\45\gmsprmNT.txt
+    C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
+--- GAMS Parameters defined
+    Input C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\01_run_Database.gms
+    PageSize 0
+    ScrDir C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\225a\
+    SysDir C:\GAMS\45\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+*** Status: Terminated due to parameter errors
+--- Job 01_run_Database.gms Stop 07/22/25 11:53:59 elapsed 0:00:00.000

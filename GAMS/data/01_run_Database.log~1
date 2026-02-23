@@ -1,0 +1,22 @@
+
+--- Job 06_pmpCalibration_2021_sustainMod.gms Start 12/29/25 15:26:26 45.7.0 64fbf3ce WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\45\gmsprmNT.txt
+    C:\Users\franj\OneDrive\Documentos\GAMS\gamsconfig.yaml
+--- GAMS Parameters defined
+    Input C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\06_pmpCalibration_2021_sustainMod.gms
+    PageSize 0
+    ScrDir C:\Users\franj\OneDrive\Documentos\GitHub\sustainmod\GAMS\data\225b\
+    SysDir C:\GAMS\45\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: Francisco Fernandez, Single User License       G230703|0002AO-WIN
+          Universidad San Sebastian,                                DC16629
+          C:\Users\franj\OneDrive\Documentos\GAMS\gamslice.txt
+          francisco.fernandez@uss.cl                                       
+          The maintenance period of the license expired on Jul 27, 2024
+          Please contact GAMS or your distributor for further information
+Processor information: 1 socket(s), 12 core(s), and 20 thread(s) available

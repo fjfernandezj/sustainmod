@@ -1,9 +1,8 @@
 B 3 C o m p i l a t i o n
-B 346 Include File Summary
-B 368 E x e c u t i o n
-I 368 t_cropData_censo
-I 43043 t_outputPriceReal
-I 43113 t_selasticities
-I 43118 t_delasticities
-I 43123 t_elasticities
-I 43193 p_cropData_2021
+B 159 Include File Summary
+B 181 E x e c u t i o n
+I 181 t_cropData_censo
+I 43021 t_outputPriceReal
+I 43091 t_selasticities
+I 43096 t_delasticities
+I 43101 t_elasticities

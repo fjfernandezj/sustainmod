@@ -2,7 +2,7 @@
 $ontext
    Fondecyt Iniciación - Modelo Oferta 
 
-   Name      :   01_run_Database
+   Name      :   01_run_Database_sustainmod
    Purpose   :   define model database
    Author    :   Fco. Fernandez
    Date      :   20.02.24
@@ -100,23 +100,23 @@ parameter
 ;
 
 *   ---- import sets (from xls to gdx)
-$call "gdxxrw.exe ..\sustainmod\activities\DataBase_fondecyt.xlsx o=..\sustainmod\GAMS\data\sets\setsChile_censo.gdx se=2 index=indexSet!A3"
+$call "gdxxrw.exe ..\data\activities\DataBase_fondecyt.xlsx o=..\data\sets\02_setsChile_censo.gdx se=2 index=indexSet!A3"
 
-$gdxin ..\data\sets\setsChile_censo.gdx
+$gdxin ..\data\sets\02_setsChile_censo.gdx
 $load  act agg map_agg prov reg sys comm map_reg_comm map_prov_comm map_reg_prov_comm tech map_sys_tech
 $gdxin
 
 *   ---- import data (from xls to gdx)
 * -- Area, yield, cost, CIR
-$call "gdxxrw.exe ..\activities\DataBase_fondecyt.xlsx o=..\activities\production.gdx se=2 index=indexdat!A3"
+$call "gdxxrw.exe ..\data\activities\DataBase_fondecyt.xlsx o=..\data\activities\production.gdx se=2 index=indexdat!A3"
 
 
 * -- Precios (Fuente: ODEPA - FAOSTAT)
-$call "gdxxrw.exe ..\markets\ProducerPrices_fondecyt.xlsx o=..\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3"
+$call "gdxxrw.exe ..\data\markets\ProducerPrices_fondecyt.xlsx o=..\data\markets\ProducerPrices_fondecyt.gdx se=2 index=indexDat!A3"
 
 
 * -- Elasticidades
-$call "gdxxrw.exe ..\markets\Elasticities.xlsx o=..\markets\Elasticities.gdx se=2 index=index!A3"
+$call "gdxxrw.exe ..\data\markets\Elasticities.xlsx o=..\data\markets\Elasticities.gdx se=2 index=index!A3"
 
 
 
@@ -156,6 +156,8 @@ display t_cropData_censo, t_outputPriceReal, t_selasticities, t_delasticities, t
 **--Area --
 p_cropData_2021(reg, prov, comm, agg, act, sys, tech, 'area') = t_cropData_censo(reg, prov, comm, agg, act, sys, tech, 'area');
 
+$exit
+
 **--Rendimiento--
 p_cropData_2021(reg, prov, comm, agg, act, sys, tech, 'yld') = t_cropData_censo(reg, prov, comm, agg, act, sys, tech, 'yld');
 
@@ -178,6 +180,7 @@ p_cropData_2021(reg, prov, comm, agg, act, 'total','tot', 'area')=  p_cropData_2
                                                                 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'surco','area')+
                                                                 p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'tendido','area');
 
+$exit
 **--Produccion Total todos los sistemas todas las tecnologías --
 p_cropData_2021(reg, prov, comm, agg, act, 'total','tot', 'prd')= p_cropData_2021(reg, prov, comm, agg, act, 'irr','aspersion_movil','prd')+
                                                                          p_cropData_2021(reg, prov, comm, agg, act, 'irr', 'aspersion_por_cobertura_total','prd')+
